@@ -189,7 +189,7 @@ public class CMDBManager {
   public static boolean authenticateUser(String strUserName, String strPassword, CMInfo cmInfo) {
     boolean bValidUser = false;
     String strQuery = "select * from user_table where userName='" + strUserName
-        + "' and password=PASSWORD('" + strPassword + "');";
+        + "' and password='" + strPassword + "';";
     ResultSet rs = sendSelectQuery(strQuery, cmInfo);
     try {
       if (rs != null && rs.next()) {
@@ -235,7 +235,7 @@ public class CMDBManager {
     String strQuery = null;
     if (fieldName.equals("password")) {
       strQuery =
-          "update user_table set " + fieldName + "=PASSWORD('" + value + "') where userName='"
+          "update user_table set " + fieldName + "='" + value + "' where userName='"
               + name + "';";
     } else {
       strQuery =
