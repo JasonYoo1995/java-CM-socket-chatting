@@ -2683,7 +2683,7 @@ public class CMInteractionManager {
 		{
 			// check the user authentication (if user name and password are correct or not)
 			strQuery = "select * from user_table where userName='"+se.getUserName()+"' and "
-					+"password=PASSWORD('"+se.getPassword()+"');";
+					+"password='"+se.getPassword()+"';";
 			rs = CMDBManager.sendSelectQuery(strQuery, cmInfo);
 			try {
 				if( rs != null && !rs.next() )
