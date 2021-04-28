@@ -52,10 +52,11 @@ public class AppServer extends JFrame {
    * Set IP, Port modal before starting app server.
    */
   private void showIPAndPortModal() {
-    String strCurServerAddress = "127.0.0.1";
+    /* Sample IP, port value. */
+    String currentServerAddress = "127.0.0.1";
     String savedServerPort = "8001";
 
-    JTextField serverAddressTextField = new JTextField(strCurServerAddress);
+    JTextField serverAddressTextField = new JTextField(currentServerAddress);
     JTextField serverPortTextField = new JTextField(savedServerPort);
 
     Object[] msg = {
