@@ -18,9 +18,22 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.0"
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     compile fileTree(dir: 'libs', include: ["*.jar"])
-    implementation 'io.github.vincenzopalazzo:material-ui-swing:1.1.2-rc1'
+    compile 'io.github.vincenzopalazzo:material-ui-swing:1.1.2-rc1'
 }
 
 test {
     useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes 'Title': 'app-result', 'Version': '0.1.0'
+    }
+    archiveName 'app.jar'
+    dependsOn configurations.runtime
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
 }
