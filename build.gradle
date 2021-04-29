@@ -24,3 +24,16 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+jar {
+    manifest {
+        attributes 'Title': 'app-result', 'Version': '0.1.0', 'Main-Class': 'AppClient'
+    }
+    archiveName 'app.jar'
+    dependsOn configurations.runtime
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
