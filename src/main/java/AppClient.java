@@ -67,8 +67,8 @@ public class AppClient extends JFrame {
     JTextField userNameField = new JTextField();
     JPasswordField passwordField = new JPasswordField();
     Object[] msg = {
-        "User Name:", userNameField,
-        "Password:", passwordField
+        "아이디", userNameField,
+        "비밀번호", passwordField
     };
 
     int option = AppOptionPane

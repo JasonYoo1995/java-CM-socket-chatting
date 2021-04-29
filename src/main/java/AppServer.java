@@ -96,8 +96,8 @@ public class AppServer extends JFrame {
     JTextField serverPortTextField = new JTextField(savedServerPort);
 
     Object[] msg = {
-        "Server Address: ", serverAddressTextField,
-        "Server Port: ", serverPortTextField
+        "서버 IP", serverAddressTextField,
+        "서버 포트", serverPortTextField
     };
 
     int option = JOptionPane
