@@ -10,7 +10,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import mdlaf.MaterialLookAndFeel;
 import mdlaf.themes.MaterialLiteTheme;
-import views.AppOptionPane;
 import views.ChatPanel;
 import views.ProfilePanel;
 import views.SettingsPanel;
@@ -71,7 +70,7 @@ public class AppClient extends JFrame {
         "비밀번호", passwordField
     };
 
-    int option = AppOptionPane
+    int option = JOptionPane
         .showConfirmDialog(null, msg, "Login", JOptionPane.OK_CANCEL_OPTION);
 
     // TODO: Initialize CM client when option is OK.
