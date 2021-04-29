@@ -1,0 +1,40 @@
+name: Java CI/CD with Gradle
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1.4.3
+        with:
+          java-version: 1.8
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        id: build_gradle
+        run: ./gradlew build
+
+      - name: Make Client Batch File
+        run: echo 'java -cp "%~dp0app.jar" app/AppClient' > build/libs/client.bat
+
+      - name: Make Server Batch File
+        run: echo 'java -cp "%~dp0app.jar" app/AppServer' > build/libs/server.bat
+
+      - name: Deploy Excutable JAR
+        uses: actions/upload-artifact@v2
+        with:
+          name: nklcbdtalk-app
+          path: '**/build/libs/*.*'
