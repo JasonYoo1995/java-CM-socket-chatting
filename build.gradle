@@ -29,7 +29,7 @@ jar.enabled = false
 
 task clientJar(type: Jar) {
     manifest {
-        attributes 'Title': 'app-client-result', 'Version': '0.1.0', 'Main-Class': 'src/main/java/AppClient'
+        attributes 'Title': 'app-client-result', 'Version': '0.1.0', 'Main-Class': 'app/AppClient'
     }
     archiveName 'client.jar'
     dependsOn configurations.runtime
@@ -42,7 +42,7 @@ task clientJar(type: Jar) {
 
 task serverJar(type: Jar) {
     manifest {
-        attributes 'Title': 'app-server-result', 'Version': '0.1.0', 'Main-Class': 'src/main/java/AppServer'
+        attributes 'Title': 'app-server-result', 'Version': '0.1.0', 'Main-Class': 'app/AppServer'
     }
     archiveName 'server.jar'
     dependsOn configurations.runtime
