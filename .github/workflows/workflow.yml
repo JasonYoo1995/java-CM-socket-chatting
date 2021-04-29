@@ -25,16 +25,13 @@ jobs:
 
       - name: Build with Gradle
         id: build_gradle
-        run: ./gradlew build -x jar
-
-      - name: Make Jar
-        run: ./gradlew clientJar serverJar
+        run: ./gradlew build
 
       - name: Make Client Batch File
-        run: echo 'java -jar "%~dp0client.jar"' > build/libs/client.bat
+        run: echo 'java -cp "%~dp0app.jar" app/AppClient' > build/libs/client.bat
 
       - name: Make Server Batch File
-        run: echo 'java -jar "%~dp0server.jar"' > build/libs/server.bat
+        run: echo 'java -cp "%~dp0app.jar" app/AppServer' > build/libs/server.bat
 
       - name: Deploy Excutable JAR
         uses: actions/upload-artifact@v2
