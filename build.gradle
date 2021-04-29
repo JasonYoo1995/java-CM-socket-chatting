@@ -25,11 +25,26 @@ test {
     useJUnitPlatform()
 }
 
-jar {
+jar.enabled = false
+
+task clientJar(type: Jar) {
     manifest {
-        attributes 'Title': 'app-result', 'Version': '0.1.0', 'Main-Class': 'AppClient'
+        attributes 'Title': 'app-client-result', 'Version': '0.1.0', 'Main-Class': 'AppClient'
     }
-    archiveName 'app.jar'
+    archiveName 'client.jar'
+    dependsOn configurations.runtime
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
+task serverJar(type: Jar) {
+    manifest {
+        attributes 'Title': 'app-server-result', 'Version': '0.1.0', 'Main-Class': 'AppServer'
+    }
+    archiveName 'server.jar'
     dependsOn configurations.runtime
     from {
         configurations.compile.collect {
