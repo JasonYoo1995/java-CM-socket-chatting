@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.Enumeration;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -32,14 +33,10 @@ public class AppServer extends JFrame {
     setResizable(false);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLayout(new BorderLayout());
+    setUIFont(new javax.swing.plaf.FontUIResource("Nanum Gothic", Font.PLAIN, 12));
 
+    setMaterialTheme();
     showIPAndPortModal();
-
-    try {
-      UIManager.setLookAndFeel(new MaterialLookAndFeel(new JMarsDarkTheme()));
-    } catch (UnsupportedLookAndFeelException e) {
-      e.printStackTrace();
-    }
 
     logTextPane = new JTextPane();
     logTextPane.setEditable(false);
@@ -57,6 +54,27 @@ public class AppServer extends JFrame {
     setVisible(true);
   }
 
+  private void setMaterialTheme() {
+    try {
+      UIManager.setLookAndFeel(new MaterialLookAndFeel(new MaterialLiteTheme()));
+    } catch (UnsupportedLookAndFeelException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Set global font.
+   */
+  private void setUIFont(javax.swing.plaf.FontUIResource f) {
+    Enumeration<Object> keys = UIManager.getDefaults().keys();
+    while (keys.hasMoreElements()) {
+      Object key = keys.nextElement();
+      Object value = UIManager.get(key);
+      if (value instanceof javax.swing.plaf.FontUIResource) {
+        UIManager.put(key, f);
+      }
+    }
+  }
 
   /**
    * Add server log messages.
