@@ -1,51 +1,69 @@
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Font;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
+import javax.swing.text.StyledDocument;
+import mdlaf.MaterialLookAndFeel;
+import mdlaf.themes.JMarsDarkTheme;
+import mdlaf.themes.MaterialLiteTheme;
+import mdlaf.themes.MaterialOceanicTheme;
 
 public class AppServer extends JFrame {
 
   /**
-   * TextPane for log.
+   * Text area for log.
    */
   private JTextPane logTextPane;
 
   public AppServer() {
     setTitle("NKLCBDTalk Server");
     setSize(500, 500);
+    setResizable(false);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLayout(new BorderLayout());
 
-    add(makeLogTextPane());
-
     showIPAndPortModal();
+
+    try {
+      UIManager.setLookAndFeel(new MaterialLookAndFeel(new JMarsDarkTheme()));
+    } catch (UnsupportedLookAndFeelException e) {
+      e.printStackTrace();
+    }
+
+    logTextPane = new JTextPane();
+    logTextPane.setEditable(false);
+    add(logTextPane, BorderLayout.CENTER);
+
+    JScrollPane scrollPane = new JScrollPane(logTextPane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+        JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    add(scrollPane);
+
+    /* Test dummy message */
+    for (int i = 0; i < 100; i++) {
+      addLogMessage("Dummy log " + (i + 1));
+    }
 
     setVisible(true);
   }
 
-  /**
-   * Make scrollable text pane for log.
-   */
-  private JScrollPane makeLogTextPane() {
-    logTextPane = new JTextPane();
-    logTextPane.setEditable(false);
-
-    /* Test scrollable text pane.
-    for (int i = 0; i < 100; i++) {
-      emitLogMessage("Hello World!");
-    } */
-
-    return new JScrollPane(logTextPane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-        JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-  }
 
   /**
-   * Emit server log messages.
+   * Add server log messages.
    */
-  private void emitLogMessage(String message) {
-    logTextPane.setText(logTextPane.getText() + message + "\n");
+  private void addLogMessage(String message) {
+    String log = logTextPane.getText() + "\n" + message;
+    logTextPane.setText(log.trim());
   }
 
   /**
@@ -65,9 +83,10 @@ public class AppServer extends JFrame {
     };
 
     int option = JOptionPane
-        .showConfirmDialog(null, msg, "Server Information", JOptionPane.OK_CANCEL_OPTION);
+        .showConfirmDialog(null, msg, "Server Information", JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.INFORMATION_MESSAGE, null);
 
-    // TODO: Initialize CM.
+    // TODO: Initialize CM when option is OK.
   }
 
   public static void main(String[] args) {
