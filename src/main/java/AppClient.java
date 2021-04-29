@@ -8,6 +8,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.FontUIResource;
 import mdlaf.MaterialLookAndFeel;
 import mdlaf.themes.MaterialLiteTheme;
 import views.ChatPanel;
@@ -51,12 +52,12 @@ public class AppClient extends JFrame {
   /**
    * Set global font.
    */
-  private void setUIFont(javax.swing.plaf.FontUIResource f) {
+  private void setUIFont(FontUIResource f) {
     Enumeration<Object> keys = UIManager.getDefaults().keys();
     while (keys.hasMoreElements()) {
       Object key = keys.nextElement();
       Object value = UIManager.get(key);
-      if (value instanceof javax.swing.plaf.FontUIResource) {
+      if (value instanceof FontUIResource) {
         UIManager.put(key, f);
       }
     }
