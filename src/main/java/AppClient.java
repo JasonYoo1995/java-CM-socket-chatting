@@ -13,7 +13,6 @@ import mdlaf.MaterialLookAndFeel;
 import mdlaf.themes.MaterialLiteTheme;
 import views.ChatPanel;
 import views.ProfilePanel;
-import views.SettingsPanel;
 
 public class AppClient extends JFrame {
 
@@ -37,7 +36,6 @@ public class AppClient extends JFrame {
     tabbedPane.setFont(new Font("Nanum Gothic", Font.BOLD, 16));
     tabbedPane.add("프로필", new ProfilePanel());
     tabbedPane.add("채팅", new ChatPanel());
-    tabbedPane.add("설정", new SettingsPanel());
     add(tabbedPane);
   }
 
