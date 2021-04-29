@@ -34,7 +34,7 @@ jobs:
         run: echo 'java -jar "%~dp0client.jar"' > build/libs/client.bat
 
       - name: Make Server Batch File
-        run: echo 'java -jar "%~dp0server.jar"' > build/libs/client.bat
+        run: echo 'java -jar "%~dp0server.jar"' > build/libs/server.bat
 
       - name: Deploy Excutable JAR
         uses: actions/upload-artifact@v2
