@@ -10,9 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
-import mdlaf.components.textarea.MaterialTextAreaUI;
 
 public class ProfilePanel extends JPanel {
 

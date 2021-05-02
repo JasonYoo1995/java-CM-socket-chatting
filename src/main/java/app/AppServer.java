@@ -1,5 +1,8 @@
 package app;
 
+import com.github.weisj.darklaf.LafManager;
+import com.github.weisj.darklaf.theme.DarculaTheme;
+import com.github.weisj.darklaf.theme.OneDarkTheme;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.util.Enumeration;
@@ -9,9 +12,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import mdlaf.MaterialLookAndFeel;
-import mdlaf.themes.MaterialLiteTheme;
 
 public class AppServer extends JFrame {
 
@@ -28,7 +28,7 @@ public class AppServer extends JFrame {
     setLayout(new BorderLayout());
     setUIFont(new javax.swing.plaf.FontUIResource("Nanum Gothic", Font.PLAIN, 12));
 
-    setMaterialTheme();
+    setAppTheme();
     showIPAndPortModal();
 
     logTextPane = new JTextPane();
@@ -47,12 +47,8 @@ public class AppServer extends JFrame {
     setVisible(true);
   }
 
-  private void setMaterialTheme() {
-    try {
-      UIManager.setLookAndFeel(new MaterialLookAndFeel(new MaterialLiteTheme()));
-    } catch (UnsupportedLookAndFeelException e) {
-      e.printStackTrace();
-    }
+  private void setAppTheme() {
+    LafManager.install(new DarculaTheme());
   }
 
   /**
