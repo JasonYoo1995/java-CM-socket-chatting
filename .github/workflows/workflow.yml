@@ -26,15 +26,3 @@ jobs:
       - name: Build with Gradle
         id: build_gradle
         run: ./gradlew build
-
-      - name: Make Client Batch File
-        run: echo 'java -cp "%~dp0app.jar" app/AppClient' > build/libs/client.bat
-
-      - name: Make Server Batch File
-        run: echo 'java -cp "%~dp0app.jar" app/AppServer' > build/libs/server.bat
-
-      - name: Deploy Excutable JAR
-        uses: actions/upload-artifact@v2
-        with:
-          name: nklcbdtalk-app
-          path: '**/build/libs/*.*'
