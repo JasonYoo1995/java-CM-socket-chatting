@@ -8,7 +8,6 @@ import java.awt.geom.Point2D;
 import java.awt.FontMetrics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import mdlaf.components.button.MaterialButtonUI;
 
 public class CircleButton extends JButton {
 
