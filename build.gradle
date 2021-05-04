@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version "5.2.0"
 }
 
 group 'org.example'
@@ -25,17 +26,12 @@ test {
     useJUnitPlatform()
 }
 
+sourceSets.main.java.srcDirs = ['src/main/java']
+
+shadowJar {
+    archiveFileName = "app.jar"
+}
+
 jar {
-    manifest {
-        attributes 'Title': 'app-result', 'Version': '0.1.0'
-    }
-    archiveName 'app.jar'
-    from {
-        configurations.compile.collect {
-            it.isDirectory() ? it : zipTree(it)
-        }
-        configurations.runtimeClasspath.collect {
-            it.isDirectory() ? it : zipTree(it)
-        }
-    }
+    finalizedBy shadowJar
 }

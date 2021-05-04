@@ -26,3 +26,15 @@ jobs:
       - name: Build with Gradle
         id: build_gradle
         run: ./gradlew build
+
+      - name: Make Client Batch File
+        run: echo 'java -cp "%~dp0app.jar" app/AppClient' > build/libs/app_client.bat
+
+      - name: Make Server Batch File
+        run: echo 'java -cp "%~dp0app.jar" app/AppServer' > build/libs/app_server.bat
+
+      - name: Deploy Shadow JAR
+        uses: actions/upload-artifact@v2
+        with:
+          name: nklcbdtalk-app
+          path: '**/build/libs/app*.*'
