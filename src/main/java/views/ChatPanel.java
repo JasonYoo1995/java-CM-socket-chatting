@@ -3,10 +3,14 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
 public class ChatPanel extends JPanel {
@@ -50,6 +54,15 @@ public class ChatPanel extends JPanel {
     chatRooms.setFont(new Font("Nanum Gothic", Font.PLAIN, 28));
     JScrollPane scrollPane = new JScrollPane(chatRooms, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
         JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    chatRooms.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        if (e.getClickCount() == 2) {
+          String chatRoomTitle = chatRooms.getSelectedValue();
+          new ChatRoomFrame(chatRoomTitle);
+        }
+      }
+    });
     chatRoomsPanel.add(scrollPane);
     scrollPane.setPreferredSize(new Dimension(560, 420));
     chatRoomsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -60,6 +73,14 @@ public class ChatPanel extends JPanel {
     configPanel = new JPanel();
     configPanel.setLayout(new BorderLayout());
     addChatRoomButton = new CircleButton("채팅추가");
+    addChatRoomButton.addActionListener(e -> {
+      JTextField chatRoomTextField = new JTextField();
+      Object[] chatRoomObject = {"채팅방 이름", chatRoomTextField};
+      int option = JOptionPane.showConfirmDialog(
+          this, chatRoomObject, "채팅방 생성", JOptionPane.OK_CANCEL_OPTION
+      );
+      // TODO: Update chatRooms if chat room is created successfully.
+    });
     configPanel.add(addChatRoomButton, BorderLayout.EAST);
     configPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     add(configPanel, BorderLayout.NORTH);
