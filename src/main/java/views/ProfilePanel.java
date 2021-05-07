@@ -40,12 +40,11 @@ public class ProfilePanel extends JPanel {
     setOthersProfilePanel();
   }
 
-  private void setOwnerProfilePanel() {
+  public void setOwnerProfilePanel() {
     ownerPanel = new JPanel();
     ownerPanel.setLayout(new BorderLayout());
     ownerLabel = new JLabel();
     ownerLabel.setFont(new Font("Nanum Gothic", Font.BOLD, 32));
-    ownerLabel.setText("신윤섭");
     ownerPanel.add(ownerLabel, BorderLayout.WEST);
     CircleButton logoutButton = new CircleButton("로그아웃");
     ownerPanel.add(logoutButton, BorderLayout.EAST);
@@ -53,7 +52,11 @@ public class ProfilePanel extends JPanel {
     ownerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
   }
 
-  private void setOthersProfilePanel() {
+  public void updateOwnerProfile(String username) {
+    ownerLabel.setText(username);
+  }
+
+  public void setOthersProfilePanel() {
     othersPanel = new JPanel();
     UserConnection[] sampleUsers = {
         new UserConnection("유경원", true),
