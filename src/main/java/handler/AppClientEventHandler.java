@@ -40,12 +40,9 @@ public class AppClientEventHandler implements CMAppEventHandler {
 
   private void processDummyEvent(CMEvent cme) {
     CMDummyEvent due = (CMDummyEvent) cme;
-    System.out.println("---------------------------");
-    System.out.println(due.getDummyInfo());
-    System.out.println("---------------------------");
-
     String[] info = due.getDummyInfo().split("\n");
-    if (info[0].equals("USERCONNECTION")) {
+    String tag = info[0];
+    if (tag.equals("USERCONNECTION")) {
       String myUsername = stub.getMyself().getName();
       List<UserConnection> userConnections = new ArrayList<>();
       for (int i = 1; i < info.length; i++) {
