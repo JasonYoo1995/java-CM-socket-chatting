@@ -3,6 +3,7 @@ package views;
 import callback.LoginCallback;
 import com.github.weisj.darklaf.LafManager;
 import com.github.weisj.darklaf.theme.DarculaTheme;
+import core.UserConnection;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import javax.swing.JFrame;
@@ -73,6 +74,10 @@ public class AppClientFrame extends JFrame {
 
   public void updateUserProfile(String username) {
     profilePanel.updateOwnerProfile(username);
+  }
+
+  public void updateOthersProfilePanel(UserConnection[] userConnections) {
+    profilePanel.updateOthersProfilePanel(userConnections);
   }
 
 }

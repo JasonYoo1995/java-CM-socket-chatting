@@ -2,6 +2,9 @@ package app;
 
 import callback.LoginCallback;
 import handler.AppClientEventHandler;
+import java.util.Vector;
+import kr.ac.konkuk.ccslab.cm.entity.CMMember;
+import kr.ac.konkuk.ccslab.cm.entity.CMUser;
 import stub.AppClientStub;
 import views.AppClientFrame;
 

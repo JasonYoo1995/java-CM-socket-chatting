@@ -43,7 +43,13 @@ public class AppServerEventHandler implements CMAppEventHandler {
               .authenticateUser(se.getUserName(), se.getPassword(), cmInfo);
           int returnCode = isAuthenticated ? 1 : 0;
           stub.replyEvent(cme, returnCode);
+          stub.broadcastUserConnections();
+          frame.addLogMessage("[" + se.getUserName() + "] logged in.");
         }
+        break;
+      case CMSessionEvent.LOGOUT:
+        stub.broadcastUserConnections();
+        frame.addLogMessage("[" + se.getUserName() + "] logged out.");
         break;
       default:
         break;

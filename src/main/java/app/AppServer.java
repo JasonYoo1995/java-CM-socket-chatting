@@ -43,4 +43,5 @@ public class AppServer {
     int port = server.stub.getServerPort();
     server.appFrame.showIPAndPortModal(ip, port);
   }
+
 }
