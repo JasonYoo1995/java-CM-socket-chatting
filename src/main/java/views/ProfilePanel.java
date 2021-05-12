@@ -58,13 +58,7 @@ public class ProfilePanel extends JPanel {
 
   public void setOthersProfilePanel() {
     othersPanel = new JPanel();
-    UserConnection[] sampleUsers = {
-        new UserConnection("유경원", true),
-        new UserConnection("유진욱", true),
-        new UserConnection("한지희", true),
-        new UserConnection("임민규", false)
-    };
-    others = new JList<>(sampleUsers);
+    others = new JList<>();
     others.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     others.setFont(new Font("Nanum Gothic", Font.PLAIN, 20));
     others.setCellRenderer(new UserConnectionRenderer());
@@ -74,5 +68,9 @@ public class ProfilePanel extends JPanel {
     scrollPane.setPreferredSize(new Dimension(560, 420));
     othersPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     add(othersPanel, BorderLayout.WEST);
+  }
+
+  public void updateOthersProfilePanel(UserConnection[] userConnections) {
+    others.setListData(userConnections);
   }
 }

@@ -1,5 +1,9 @@
 package handler;
 
+import core.UserConnection;
+import java.util.ArrayList;
+import java.util.List;
+import kr.ac.konkuk.ccslab.cm.event.CMDummyEvent;
 import kr.ac.konkuk.ccslab.cm.event.CMEvent;
 import kr.ac.konkuk.ccslab.cm.event.CMSessionEvent;
 import kr.ac.konkuk.ccslab.cm.event.handler.CMAppEventHandler;
@@ -25,8 +29,32 @@ public class AppClientEventHandler implements CMAppEventHandler {
     switch (cme.getType()) {
       case CMInfo.CM_SESSION_EVENT:
         processSessionEvent(cme);
+        break;
+      case CMInfo.CM_DUMMY_EVENT:
+        processDummyEvent(cme);
+        break;
       default:
         break;
+    }
+  }
+
+  private void processDummyEvent(CMEvent cme) {
+    CMDummyEvent due = (CMDummyEvent) cme;
+    String[] info = due.getDummyInfo().split("\n");
+    String tag = info[0];
+    if (tag.equals("USERCONNECTION")) {
+      String myUsername = stub.getMyself().getName();
+      List<UserConnection> userConnections = new ArrayList<>();
+      for (int i = 1; i < info.length; i++) {
+        String[] tmp = info[i].split(" ");
+        String username = tmp[0];
+        boolean isConnected = Boolean.parseBoolean(tmp[1]);
+        if (username.equals(myUsername)) {
+          continue;
+        }
+        userConnections.add(new UserConnection(username, isConnected));
+      }
+      frame.updateOthersProfilePanel(userConnections.toArray(new UserConnection[0]));
     }
   }
 
