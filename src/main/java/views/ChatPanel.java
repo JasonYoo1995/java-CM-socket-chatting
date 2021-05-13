@@ -81,7 +81,7 @@ public class ChatPanel extends JPanel {
     chatRoomsPanel = new JPanel();
     String[] chatRoomNames = new String[groupList.size()];
     for(int i=0; i<groupList.size(); i++){
-      chatRoomNames[i] = groupList.get(i).groupName;
+      chatRoomNames[i] = groupList.get(i).chatRoomName;
     }
     chatRooms = new JList<>(chatRoomNames);
     chatRooms.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

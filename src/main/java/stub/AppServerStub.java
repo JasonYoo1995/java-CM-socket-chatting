@@ -1,6 +1,5 @@
 package stub;
 
-import com.github.weisj.darklaf.icons.IconUtil;
 import core.Group;
 import core.UserConnection;
 import java.sql.ResultSet;
@@ -10,8 +9,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import kr.ac.konkuk.ccslab.cm.entity.CMGroup;
-import kr.ac.konkuk.ccslab.cm.entity.CMMember;
-import kr.ac.konkuk.ccslab.cm.entity.CMSession;
 import kr.ac.konkuk.ccslab.cm.entity.CMUser;
 import kr.ac.konkuk.ccslab.cm.event.CMDummyEvent;
 import kr.ac.konkuk.ccslab.cm.manager.CMDBManager;
@@ -30,6 +27,7 @@ public class AppServerStub extends CMServerStub {
     for(Group group : groupList){
       System.out.println(group.toString());
       sb.append(group.groupName).append(" ")
+              .append(group.chatRoomName).append(" ")
               .append(group.channelInfo.substring(0,group.channelInfo.length()-1)); // substring은 '\n'를 제거하기 위함
       for(CMUser user : group.userList){
         sb.append(" ").append(user.getName());

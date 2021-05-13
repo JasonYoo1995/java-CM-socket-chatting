@@ -5,7 +5,6 @@ import core.UserConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-import kr.ac.konkuk.ccslab.cm.entity.CMUser;
 import kr.ac.konkuk.ccslab.cm.event.CMDummyEvent;
 import kr.ac.konkuk.ccslab.cm.event.CMEvent;
 import kr.ac.konkuk.ccslab.cm.event.CMSessionEvent;
