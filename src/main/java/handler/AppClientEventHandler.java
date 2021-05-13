@@ -65,7 +65,7 @@ public class AppClientEventHandler implements CMAppEventHandler {
         String[] tmp = info[i].split(" ");
         groupList.add(new Group(tmp));
       }
-//      frame.updateOthersProfilePanel(null);
+
       stub.groupList = groupList;
 
       // DEBUG log
@@ -74,6 +74,8 @@ public class AppClientEventHandler implements CMAppEventHandler {
       for(Group group : groupList){
         System.out.println(group.toString());
       }
+
+      frame.chatPanel.setChatRooms(groupList);
     }
   }
 

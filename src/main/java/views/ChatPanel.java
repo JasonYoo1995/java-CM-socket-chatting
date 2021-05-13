@@ -1,5 +1,6 @@
 package views;
 
+import core.Group;
 import kr.ac.konkuk.ccslab.cm.stub.CMClientStub;
 import kr.ac.konkuk.ccslab.cm.stub.CMStub;
 import stub.AppClientStub;
@@ -9,6 +10,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -42,7 +44,7 @@ public class ChatPanel extends JPanel {
   public ChatPanel() {
     setLayout(new BorderLayout());
     setConfigPanel();
-    setChatRoomsPanel();
+//    setChatRoomsPanel();
   }
 
   private void setChatRoomsPanel() {
@@ -59,6 +61,33 @@ public class ChatPanel extends JPanel {
     chatRooms.setFont(new Font("Nanum Gothic", Font.PLAIN, 28));
     JScrollPane scrollPane = new JScrollPane(chatRooms, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
         JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    chatRooms.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        if (e.getClickCount() == 2) {
+          String chatRoomTitle = chatRooms.getSelectedValue();
+          new ChatRoomFrame(chatRoomTitle);
+        }
+      }
+    });
+    chatRoomsPanel.add(scrollPane);
+    scrollPane.setPreferredSize(new Dimension(560, 420));
+    chatRoomsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    add(chatRoomsPanel, BorderLayout.WEST);
+  }
+
+  public void setChatRooms(List<Group> groupList) {
+    System.out.println("[DEBUG] setChatRoomsPanel() 호출");
+    chatRoomsPanel = new JPanel();
+    String[] chatRoomNames = new String[groupList.size()];
+    for(int i=0; i<groupList.size(); i++){
+      chatRoomNames[i] = groupList.get(i).groupName;
+    }
+    chatRooms = new JList<>(chatRoomNames);
+    chatRooms.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    chatRooms.setFont(new Font("Nanum Gothic", Font.PLAIN, 28));
+    JScrollPane scrollPane = new JScrollPane(chatRooms, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     chatRooms.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
