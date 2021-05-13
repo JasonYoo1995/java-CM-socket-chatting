@@ -1,6 +1,7 @@
 package handler;
 
 import kr.ac.konkuk.ccslab.cm.event.CMEvent;
+import kr.ac.konkuk.ccslab.cm.event.CMInterestEvent;
 import kr.ac.konkuk.ccslab.cm.event.CMSessionEvent;
 import kr.ac.konkuk.ccslab.cm.event.handler.CMAppEventHandler;
 import kr.ac.konkuk.ccslab.cm.info.CMConfigurationInfo;
@@ -28,6 +29,14 @@ public class AppServerEventHandler implements CMAppEventHandler {
       case CMInfo.CM_SESSION_EVENT:
         processSessionEvent(cme);
         break;
+      case CMInfo.CM_INTEREST_EVENT:
+        processInterestEvent(cme);
+        break;
+      case CMInfo.CM_DUMMY_EVENT:
+        processDummyEvent(cme);
+        break;
+      default:
+        break;
     }
   }
 
@@ -51,8 +60,37 @@ public class AppServerEventHandler implements CMAppEventHandler {
         stub.broadcastUserConnections();
         frame.addLogMessage("[" + se.getUserName() + "] logged out.");
         break;
+      case CMSessionEvent.JOIN_SESSION:
+        frame.addLogMessage("["+se.getUserName()+"] requests to join session("+se.getSessionName()+").");
+        break;
       default:
         break;
+    }
+  }
+
+  private void processDummyEvent(CMEvent cme) {
+
+  }
+
+  private void processInterestEvent(CMEvent cme) {
+    CMInterestEvent ie = (CMInterestEvent) cme;
+    switch(ie.getID())
+    {
+      case CMInterestEvent.USER_ENTER:
+        frame.addLogMessage("["+ie.getUserName()+"] enters group("+ie.getCurrentGroup()+") in session("
+                +ie.getHandlerSession()+").");
+        frame.addLogMessage(stub.getGroupListString());
+        break;
+      case CMInterestEvent.USER_LEAVE:
+        frame.addLogMessage("["+ie.getUserName()+"] leaves group("+ie.getHandlerGroup()+") in session("
+                +ie.getHandlerSession()+").");
+        break;
+      case CMInterestEvent.USER_TALK:
+        frame.addLogMessage("("+ie.getHandlerSession()+", "+ie.getHandlerGroup()+")");
+        frame.addLogMessage("<"+ie.getUserName()+">: "+ie.getTalk()+"");
+        break;
+      default:
+        return;
     }
   }
 

@@ -1,5 +1,9 @@
 package views;
 
+import kr.ac.konkuk.ccslab.cm.stub.CMClientStub;
+import kr.ac.konkuk.ccslab.cm.stub.CMStub;
+import stub.AppClientStub;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -42,6 +46,7 @@ public class ChatPanel extends JPanel {
   }
 
   private void setChatRoomsPanel() {
+    System.out.println("[DEBUG] setChatRoomsPanel() 호출");
     chatRoomsPanel = new JPanel();
     String[] sampleChatRooms = {
         "협동분산시스템", "분산시스템및컴퓨팅", "소프트웨어V&V", "클라우드IOT서비스", "실전취업특강", "HCI",

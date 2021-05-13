@@ -34,6 +34,8 @@ public class AppClient {
         }
 
         client.appFrame.updateUserProfile(username);
+
+        // server에게 요청
       }
 
       @Override

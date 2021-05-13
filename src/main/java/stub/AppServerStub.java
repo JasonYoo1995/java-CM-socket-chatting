@@ -1,13 +1,17 @@
 package stub;
 
+import com.github.weisj.darklaf.icons.IconUtil;
+import core.Group;
 import core.UserConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import kr.ac.konkuk.ccslab.cm.entity.CMGroup;
+import kr.ac.konkuk.ccslab.cm.entity.CMMember;
+import kr.ac.konkuk.ccslab.cm.entity.CMSession;
 import kr.ac.konkuk.ccslab.cm.entity.CMUser;
 import kr.ac.konkuk.ccslab.cm.event.CMDummyEvent;
 import kr.ac.konkuk.ccslab.cm.manager.CMDBManager;
@@ -17,6 +21,25 @@ public class AppServerStub extends CMServerStub {
 
   public AppServerStub() {
     super();
+  }
+
+  public void broadcastGroupStatus() {
+    List<Group> groupList = this.getGroupList();
+    for(Group group : groupList){
+      System.out.println(group.toString());
+    }
+//    List<UserConnection> userConnections = getUserConnections();
+//
+//    StringBuffer sb = new StringBuffer("USERCONNECTION\n");
+//
+//    for (UserConnection userConnection : userConnections) {
+//      sb.append(userConnection.username).append(" ").append(userConnection.isConnected)
+//              .append("\n");
+//    }
+//
+//    CMDummyEvent due = new CMDummyEvent();
+//    due.setDummyInfo(sb.toString());
+//    broadcast(due);
   }
 
   public void broadcastUserConnections() {
@@ -62,4 +85,27 @@ public class AppServerStub extends CMServerStub {
     return new ArrayList<>(userConnections);
   }
 
+  public List<Group> getGroupList() {
+    System.out.println("[DEBUG] getGroupList() 호출");
+
+    List<Group> groupList = new ArrayList<>();
+
+    Iterator<CMGroup> groupIterator = this.getCMInfo().getInteractionInfo().getSessionList().iterator().next().getGroupList().iterator();
+    while(groupIterator.hasNext())
+    {
+      CMGroup group = groupIterator.next();
+      groupList.add(new Group(group));
+    }
+
+    return groupList;
+  }
+
+  public String getGroupListString() {
+    List<Group> groupList = getGroupList();
+    StringBuffer sb = new StringBuffer();
+    for(Group group : groupList){
+      sb.append(group.toString()+"\n");
+    }
+    return sb.toString();
+  }
 }

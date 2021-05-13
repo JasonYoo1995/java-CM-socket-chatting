@@ -16,7 +16,7 @@ public class AppClientFrame extends JFrame {
 
   public LoginCallback loginCallback;
   private ProfilePanel profilePanel;
-  private ChatPanel chatPanel;
+  public ChatPanel chatPanel;
 
   public AppClientFrame() {
     setAppTheme();
