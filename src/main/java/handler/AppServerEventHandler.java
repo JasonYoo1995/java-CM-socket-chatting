@@ -80,6 +80,7 @@ public class AppServerEventHandler implements CMAppEventHandler {
         frame.addLogMessage("["+ie.getUserName()+"] enters group("+ie.getCurrentGroup()+") in session("
                 +ie.getHandlerSession()+").");
         frame.addLogMessage(stub.getGroupListString());
+        stub.broadcastGroupStatus();
         break;
       case CMInterestEvent.USER_LEAVE:
         frame.addLogMessage("["+ie.getUserName()+"] leaves group("+ie.getHandlerGroup()+") in session("

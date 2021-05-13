@@ -11,35 +11,27 @@ public class Group {
   public String groupName;
   public String channelInfo;
   public List<CMUser> userList = new ArrayList<>();
-  public boolean isEmpty;
 
   public Group(CMGroup cmGroup) {
     this.groupName = cmGroup.getGroupName();
-    this.channelInfo = cmGroup.getMulticastChannelInfo().toString();
+    String channelInfo = cmGroup.getMulticastChannelInfo().toString();
+    this.channelInfo = channelInfo.substring(0,channelInfo.length()-1); // substring은 '\n'를 제거하기 위함
     Iterator<CMUser> userIterator = cmGroup.getGroupUsers().getAllMembers().iterator();
     while(userIterator.hasNext())
     {
       CMUser user = userIterator.next();
       userList.add(user);
     }
-    if(userList.size()==0) isEmpty = true;
-    else isEmpty = false;
   }
 
-  public String getGroupName() {
-    return groupName;
-  }
-
-  public String getChannelInfo() {
-    return channelInfo;
-  }
-
-  public List<CMUser> getUserList() {
-    return userList;
-  }
-
-  public boolean isEmpty() {
-    return isEmpty;
+  public Group(String[] tmp) {
+    this.groupName = tmp[0];
+    this.channelInfo = tmp[1];
+    for (int i=2; i<tmp.length; i++){
+      CMUser user = new CMUser();
+      user.setName(tmp[i]);
+      userList.add(user);
+    }
   }
 
   @Override
@@ -47,7 +39,7 @@ public class Group {
     StringBuffer sb = new StringBuffer();
     sb.append("==========================\n");
     sb.append(" * Group Name : "+groupName+"\n");
-    sb.append(" * Channel Information : "+channelInfo);
+    sb.append(" * Channel Information : "+channelInfo + "\n");
     sb.append(" * User List :\n");
     for(CMUser user : userList){
       sb.append("     "+user.getName()+"\n");

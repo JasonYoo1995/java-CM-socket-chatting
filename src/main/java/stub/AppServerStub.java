@@ -25,21 +25,23 @@ public class AppServerStub extends CMServerStub {
 
   public void broadcastGroupStatus() {
     List<Group> groupList = this.getGroupList();
+
+    StringBuffer sb = new StringBuffer("GROUPSTATUS\n");
     for(Group group : groupList){
       System.out.println(group.toString());
+      sb.append(group.groupName).append(" ")
+              .append(group.channelInfo.substring(0,group.channelInfo.length()-1)); // substring은 '\n'를 제거하기 위함
+      for(CMUser user : group.userList){
+        sb.append(" ").append(user.getName());
+      }
+      sb.append("\n");
     }
-//    List<UserConnection> userConnections = getUserConnections();
-//
-//    StringBuffer sb = new StringBuffer("USERCONNECTION\n");
-//
-//    for (UserConnection userConnection : userConnections) {
-//      sb.append(userConnection.username).append(" ").append(userConnection.isConnected)
-//              .append("\n");
-//    }
-//
-//    CMDummyEvent due = new CMDummyEvent();
-//    due.setDummyInfo(sb.toString());
-//    broadcast(due);
+
+    CMDummyEvent due = new CMDummyEvent();
+    due.setDummyInfo(sb.toString());
+    System.out.println("[DEBUG] AppServerStub.java - broadcastGroupStatus() - dummy event - GROUPSTATUS");
+    System.out.println(sb.toString());
+    broadcast(due);
   }
 
   public void broadcastUserConnections() {
