@@ -10,14 +10,13 @@ import java.util.List;
 
 public class AppClient {
 
-  private AppClientFrame appFrame;
-  private AppClientStub stub;
-  private AppClientEventHandler clientEventHandler;
+  private final AppClientFrame appFrame;
+  private final AppClientStub stub;
 
   public AppClient() {
     appFrame = new AppClientFrame();
     stub = new AppClientStub();
-    clientEventHandler = new AppClientEventHandler(stub, appFrame);
+    AppClientEventHandler clientEventHandler = new AppClientEventHandler(stub, appFrame);
     stub.setAppEventHandler(clientEventHandler);
   }
 
@@ -44,36 +43,23 @@ public class AppClient {
       }
     };
 
-    client.appFrame.chatPanel.groupCallback = new GroupCallback() {
-      @Override
-      public void onSuccess(String chatRoomName) {
-        // 채팅방 이름 중복 검사
-        final List<Group> groupList = client.stub.groupList;
-        for (Group group : groupList){
-          if(group.chatRoomName.equals(chatRoomName)){
-            System.out.println("채팅방 이름 중복");
-            return;
-          }
+    client.appFrame.chatPanel.groupCallback = chatRoomName -> {
+      // 채팅방 이름 중복 검사
+      final List<Group> groupList = client.stub.groupList;
+      for (Group group : groupList) {
+        if (group.chatRoomName.equals(chatRoomName)) {
+          System.out.println("채팅방 이름 중복");
+          return;
         }
-
-        client.stub.createAndEnterChatRoom(chatRoomName);
-        client.appFrame.chatPanel.enterChatRoom(chatRoomName);
       }
+
+      client.stub.createAndEnterChatRoom(chatRoomName);
+      client.appFrame.chatPanel.enterChatRoom(chatRoomName);
     };
 
-    client.appFrame.chatPanel.exitCallback = new ExitCallback() {
-      @Override
-      public void exit() {
-        client.stub.exitChatRoom();
-      }
-    };
+    client.appFrame.chatPanel.exitCallback = client.stub::exitChatRoom;
 
-    client.appFrame.chatPanel.enterCallback = new EnterCallback() {
-      @Override
-      public void enter(String chatRoomName) {
-        client.stub.selectAndEnterChatRoom(chatRoomName);
-      }
-    };
+    client.appFrame.chatPanel.enterCallback = client.stub::selectAndEnterChatRoom;
 
     client.appFrame.showLoginModal();
   }
