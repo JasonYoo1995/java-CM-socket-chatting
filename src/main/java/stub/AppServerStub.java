@@ -9,22 +9,25 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import kr.ac.konkuk.ccslab.cm.entity.CMGroup;
+import kr.ac.konkuk.ccslab.cm.entity.CMMember;
 import kr.ac.konkuk.ccslab.cm.entity.CMUser;
 import kr.ac.konkuk.ccslab.cm.event.CMDummyEvent;
 import kr.ac.konkuk.ccslab.cm.manager.CMDBManager;
 import kr.ac.konkuk.ccslab.cm.stub.CMServerStub;
 
 public class AppServerStub extends CMServerStub {
+  public List<Group> groupList = new ArrayList<Group>();
 
   public AppServerStub() {
     super();
   }
 
   public void broadcastGroupStatus() {
-    List<Group> groupList = this.getGroupList();
-
     StringBuffer sb = new StringBuffer("GROUPSTATUS\n");
     for(Group group : groupList){
+      if(group.groupName.equals("g1")) continue; // g1은 대기실이므로 보내지 않음
+      if(group.userList.size()==0) continue; // 빈 채팅방은 보내지 않음
+      if(group.chatRoomName.equals("빈_채팅방")) continue; // 빈 채팅방은 보내지 않음
       System.out.println(group.toString());
       sb.append(group.groupName).append(" ")
               .append(group.chatRoomName).append(" ")
@@ -85,25 +88,55 @@ public class AppServerStub extends CMServerStub {
     return new ArrayList<>(userConnections);
   }
 
-  public List<Group> getGroupList() {
-    System.out.println("[DEBUG] getGroupList() 호출");
-
-    List<Group> groupList = new ArrayList<>();
-
+  public void initiateGroupUserList() {
     Iterator<CMGroup> groupIterator = this.getCMInfo().getInteractionInfo().getSessionList().iterator().next().getGroupList().iterator();
     while(groupIterator.hasNext())
     {
       CMGroup group = groupIterator.next();
       groupList.add(new Group(group));
     }
+  }
 
-    return groupList;
+  public void updateGroupUserList() {
+    Iterator<CMGroup> groupIterator = this.getCMInfo().getInteractionInfo().getSessionList().iterator().next().getGroupList().iterator();
+    int i = 0;
+    while(groupIterator.hasNext())
+    {
+      List<CMUser> userList = new ArrayList<>();
+      CMGroup group = groupIterator.next();
+      Iterator<CMUser> userIterator = group.getGroupUsers().getAllMembers().iterator();
+      while(userIterator.hasNext())
+      {
+        userList.add(userIterator.next());
+      }
+      groupList.get(i).userList = userList;
+      if(userList.size()==0) groupList.get(i).chatRoomName = "빈_채팅방";
+      i++;
+      System.out.println("[DEBUG] userList "+ userList);
+    }
+  }
+
+  public void setGroupChatRoomName(String groupName, String chatRoomName){
+    for(Group group : groupList){
+      if(group.groupName.equals(groupName)){
+        group.chatRoomName = chatRoomName;
+      }
+    }
+  }
+
+  public void emptyGroupChatRoomName(String groupName){
+    for(Group group : groupList){
+      if(group.groupName.equals(groupName)){
+        if(group.userList.size()==0){
+          group.chatRoomName = "빈_채팅방";
+        }
+      }
+    }
   }
 
   public String getGroupListString() {
-    List<Group> groupList = getGroupList();
     StringBuffer sb = new StringBuffer();
-    for(Group group : groupList){
+    for(Group group : this.groupList){
       sb.append(group.toString()+"\n");
     }
     return sb.toString();

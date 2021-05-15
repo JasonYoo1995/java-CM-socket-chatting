@@ -20,6 +20,7 @@ public class AppClientFrame extends JFrame {
 
   public AppClientFrame() {
     setAppTheme();
+    chatPanel = new ChatPanel();
   }
 
   public void init() {
@@ -36,7 +37,6 @@ public class AppClientFrame extends JFrame {
     JTabbedPane tabbedPane = new JTabbedPane();
     tabbedPane.setFont(new Font("Nanum Gothic", Font.BOLD, 16));
     profilePanel = new ProfilePanel();
-    chatPanel = new ChatPanel();
     tabbedPane.add("프로필", profilePanel);
     tabbedPane.add("채팅", chatPanel);
     add(tabbedPane);

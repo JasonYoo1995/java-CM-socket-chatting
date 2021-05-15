@@ -42,6 +42,7 @@ public class AppServer {
     String ip = server.stub.getServerAddress();
     int port = server.stub.getServerPort();
     server.appFrame.showIPAndPortModal(ip, port);
+    server.stub.initiateGroupUserList();
   }
 
 }
