@@ -44,12 +44,6 @@ public class AppClientFrame extends JFrame {
 
   private void setAppTheme() {
     LafManager.install(new DarculaTheme());
-//    LafManager.install(new IntelliJTheme());
-//    LafManager.install(new HighContrastLightTheme());
-//    LafManager.install(new HighContrastDarkTheme());
-//    LafManager.install(new OneDarkTheme());
-//    LafManager.install(new SolarizedLightTheme());
-//    LafManager.install(new SolarizedDarkTheme());
   }
 
   public void showLoginModal() {

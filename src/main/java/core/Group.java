@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Group {
+
   public String groupName; // conf 파일에 사전에 정의된 GROUP_NAME
   public String chatRoomName; // 채팅 추가시 직접 지은 채팅방 이름
   public String channelInfo;
@@ -17,20 +18,16 @@ public class Group {
     this.groupName = cmGroup.getGroupName();
     this.chatRoomName = "빈_채팅방";
     String channelInfo = cmGroup.getMulticastChannelInfo().toString();
-    this.channelInfo = channelInfo.substring(0,channelInfo.length()-1); // substring은 '\n'를 제거하기 위함
-    Iterator<CMUser> userIterator = cmGroup.getGroupUsers().getAllMembers().iterator();
-    while(userIterator.hasNext())
-    {
-      CMUser user = userIterator.next();
-      userList.add(user);
-    }
+    this.channelInfo = channelInfo
+        .substring(0, channelInfo.length() - 1); // substring은 '\n'를 제거하기 위함
+    userList.addAll(cmGroup.getGroupUsers().getAllMembers());
   }
 
   public Group(String[] tmp) {
     this.groupName = tmp[0];
     this.chatRoomName = tmp[1];
     this.channelInfo = tmp[2];
-    for (int i=3; i<tmp.length; i++){
+    for (int i = 3; i < tmp.length; i++) {
       CMUser user = new CMUser();
       user.setName(tmp[i]);
       userList.add(user);
@@ -41,12 +38,12 @@ public class Group {
   public String toString() {
     StringBuffer sb = new StringBuffer();
     sb.append("==========================\n");
-    sb.append(" * Group Name : "+groupName+"\n");
-    sb.append(" * Chat Room Name : "+chatRoomName+"\n");
-    sb.append(" * Channel Information : "+channelInfo + "\n");
+    sb.append(" * Group Name : ").append(groupName).append("\n");
+    sb.append(" * Chat Room Name : ").append(chatRoomName).append("\n");
+    sb.append(" * Channel Information : ").append(channelInfo).append("\n");
     sb.append(" * User List :\n");
-    for(CMUser user : userList){
-      sb.append("     "+user.getName()+"\n");
+    for (CMUser user : userList) {
+      sb.append("     ").append(user.getName()).append("\n");
     }
     sb.append("==========================");
     return sb.toString();

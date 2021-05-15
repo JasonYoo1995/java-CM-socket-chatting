@@ -57,8 +57,7 @@ public class AppClientEventHandler implements CMAppEventHandler {
         userConnections.add(new UserConnection(username, isConnected));
       }
       frame.updateOthersProfilePanel(userConnections.toArray(new UserConnection[0]));
-    }
-    else if(tag.equals("GROUPSTATUS")){
+    } else if (tag.equals("GROUPSTATUS")) {
       List<Group> groupList = new ArrayList<>();
       for (int i = 1; i < info.length; i++) {
         String[] tmp = info[i].split(" ");
@@ -70,7 +69,7 @@ public class AppClientEventHandler implements CMAppEventHandler {
       // DEBUG log
       System.out.println("[DEBUG] Group Status in Client");
       StringBuffer sb = new StringBuffer();
-      for(Group group : groupList){
+      for (Group group : groupList) {
         System.out.println(group.toString());
       }
 

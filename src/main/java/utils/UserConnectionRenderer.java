@@ -1,5 +1,6 @@
-package core;
+package utils;
 
+import core.UserConnection;
 import java.awt.Component;
 import java.awt.Image;
 import javax.swing.DefaultListCellRenderer;

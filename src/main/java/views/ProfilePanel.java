@@ -1,7 +1,7 @@
 package views;
 
 import core.UserConnection;
-import core.UserConnectionRenderer;
+import utils.UserConnectionRenderer;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -14,24 +14,9 @@ import javax.swing.ListSelectionModel;
 
 public class ProfilePanel extends JPanel {
 
-  /**
-   * Owner profile pane.
-   */
   private JPanel ownerPanel;
-
-  /**
-   * Owner profile.
-   */
   private JLabel ownerLabel;
-
-  /**
-   * Other profiles panel.
-   */
   private JPanel othersPanel;
-
-  /**
-   * Other profiles.
-   */
   private JList<UserConnection> others;
 
   public ProfilePanel() {
