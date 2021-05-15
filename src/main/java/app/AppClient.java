@@ -57,6 +57,7 @@ public class AppClient {
         }
 
         client.stub.createAndEnterChatRoom(chatRoomName);
+        client.appFrame.chatPanel.enterChatRoom(chatRoomName);
       }
     };
 
@@ -64,13 +65,6 @@ public class AppClient {
       @Override
       public void exit() {
         client.stub.exitChatRoom();
-      }
-    };
-
-    client.stub.chatRoomCallback = new ChatRoomCallback() {
-      @Override
-      public void open(String chatRoomName) {
-        client.appFrame.chatPanel.enterChatRoom(chatRoomName);
       }
     };
 
