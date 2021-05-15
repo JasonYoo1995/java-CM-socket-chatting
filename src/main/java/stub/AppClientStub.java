@@ -1,6 +1,6 @@
 package stub;
 
-import callback.EnterCallback;
+import callback.ChatRoomCallback;
 import core.Group;
 import kr.ac.konkuk.ccslab.cm.event.CMDummyEvent;
 import kr.ac.konkuk.ccslab.cm.info.CMInteractionInfo;
@@ -12,7 +12,7 @@ import java.util.List;
 public class AppClientStub extends CMClientStub {
   public List<Group> groupList = new ArrayList<Group>();
   public static final int totalGroupCount = 5; // cm-session1.conf에 선언되어 있는 group의 개수
-  public EnterCallback enterCallback;
+  public ChatRoomCallback chatRoomCallback;
 
   public AppClientStub() {
     super();
@@ -49,7 +49,7 @@ public class AppClientStub extends CMClientStub {
       changeGroup(groupName); // Interest Event 전달
 
       // enter chatroom
-      enterCallback.enter(chatRoomName); // 채팅창(JFrame) 열기
+      chatRoomCallback.open(chatRoomName); // 채팅창(JFrame) 열기
     }
   }
 

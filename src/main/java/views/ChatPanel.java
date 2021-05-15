@@ -1,5 +1,6 @@
 package views;
 
+import callback.EnterCallback;
 import callback.ExitCallback;
 import callback.GroupCallback;
 import core.Group;
@@ -45,6 +46,7 @@ public class ChatPanel extends JPanel {
 
   public GroupCallback groupCallback;
   public ExitCallback exitCallback;
+  public EnterCallback enterCallback;
 
   public ChatPanel() {
     setLayout(new BorderLayout());
@@ -69,6 +71,7 @@ public class ChatPanel extends JPanel {
         if (e.getClickCount() == 2) {
           String chatRoomTitle = chatRooms.getSelectedValue();
           new ChatRoomFrame(chatRoomTitle, exitCallback);
+          enterCallback.enter(chatRoomTitle);
         }
       }
     });

@@ -1,9 +1,6 @@
 package app;
 
-import callback.ExitCallback;
-import callback.GroupCallback;
-import callback.LoginCallback;
-import callback.EnterCallback;
+import callback.*;
 import core.Group;
 import handler.AppClientEventHandler;
 import stub.AppClientStub;
@@ -70,10 +67,17 @@ public class AppClient {
       }
     };
 
-    client.stub.enterCallback = new EnterCallback() {
+    client.stub.chatRoomCallback = new ChatRoomCallback() {
+      @Override
+      public void open(String chatRoomName) {
+        client.appFrame.chatPanel.enterChatRoom(chatRoomName);
+      }
+    };
+
+    client.appFrame.chatPanel.enterCallback = new EnterCallback() {
       @Override
       public void enter(String chatRoomName) {
-        client.appFrame.chatPanel.enterChatRoom(chatRoomName);
+        client.stub.selectAndEnterChatRoom(chatRoomName);
       }
     };
 
