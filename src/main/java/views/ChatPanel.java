@@ -1,10 +1,19 @@
 package views;
 
+import callback.EnterCallback;
+import callback.ExitCallback;
+import callback.GroupCallback;
+import core.Group;
+import kr.ac.konkuk.ccslab.cm.stub.CMClientStub;
+import kr.ac.konkuk.ccslab.cm.stub.CMStub;
+import stub.AppClientStub;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -35,38 +44,48 @@ public class ChatPanel extends JPanel {
    */
   private CircleButton addChatRoomButton;
 
+  public GroupCallback groupCallback;
+  public ExitCallback exitCallback;
+  public EnterCallback enterCallback;
+
   public ChatPanel() {
     setLayout(new BorderLayout());
     setConfigPanel();
-    setChatRoomsPanel();
   }
 
-  private void setChatRoomsPanel() {
+  public void setChatRooms(List<Group> groupList) {
+    System.out.println("[DEBUG] setChatRoomsPanel() 호출");
     chatRoomsPanel = new JPanel();
-    String[] sampleChatRooms = {
-        "협동분산시스템", "분산시스템및컴퓨팅", "소프트웨어V&V", "클라우드IOT서비스", "실전취업특강", "HCI",
-        "협동분산시스템", "분산시스템및컴퓨팅", "소프트웨어V&V", "클라우드IOT서비스", "실전취업특강", "HCI",
-        "협동분산시스템", "분산시스템및컴퓨팅", "소프트웨어V&V", "클라우드IOT서비스", "실전취업특강", "HCI",
-        "협동분산시스템", "분산시스템및컴퓨팅", "소프트웨어V&V", "클라우드IOT서비스", "실전취업특강", "HCI"
-    };
-    chatRooms = new JList<>(sampleChatRooms);
+    String[] chatRoomNames = new String[groupList.size()];
+    for(int i=0; i<groupList.size(); i++){
+      chatRoomNames[i] = groupList.get(i).chatRoomName;
+    }
+    chatRooms = new JList<>(chatRoomNames);
     chatRooms.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     chatRooms.setFont(new Font("Nanum Gothic", Font.PLAIN, 28));
     JScrollPane scrollPane = new JScrollPane(chatRooms, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-        JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     chatRooms.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2) {
           String chatRoomTitle = chatRooms.getSelectedValue();
-          new ChatRoomFrame(chatRoomTitle);
+          new ChatRoomFrame(chatRoomTitle, exitCallback);
+          enterCallback.enter(chatRoomTitle);
         }
       }
     });
     chatRoomsPanel.add(scrollPane);
     scrollPane.setPreferredSize(new Dimension(560, 420));
     chatRoomsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    if(this.getComponentCount()==2) remove(1); // 기존 chatRoomsPanel 제거
     add(chatRoomsPanel, BorderLayout.WEST);
+
+    System.out.println("[DEBUG] GroupList in ChatPanel.java");
+    System.out.println(groupList);
+
+    this.revalidate();
+    chatRooms.updateUI();
   }
 
   private void setConfigPanel() {
@@ -80,10 +99,18 @@ public class ChatPanel extends JPanel {
           this, chatRoomObject, "채팅방 생성", JOptionPane.OK_CANCEL_OPTION
       );
       // TODO: Update chatRooms if chat room is created successfully.
+      if (option == JOptionPane.YES_OPTION){
+        String chatRoomName = chatRoomTextField.getText();
+        groupCallback.onSuccess(chatRoomName);
+      }
     });
     configPanel.add(addChatRoomButton, BorderLayout.EAST);
     configPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     add(configPanel, BorderLayout.NORTH);
+  }
+
+  public void enterChatRoom(String chatRoomTitle){
+    new ChatRoomFrame(chatRoomTitle, exitCallback);
   }
 
 }

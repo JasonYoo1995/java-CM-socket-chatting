@@ -1,8 +1,10 @@
 package handler;
 
+import core.Group;
 import core.UserConnection;
 import java.util.ArrayList;
 import java.util.List;
+
 import kr.ac.konkuk.ccslab.cm.event.CMDummyEvent;
 import kr.ac.konkuk.ccslab.cm.event.CMEvent;
 import kr.ac.konkuk.ccslab.cm.event.CMSessionEvent;
@@ -55,6 +57,24 @@ public class AppClientEventHandler implements CMAppEventHandler {
         userConnections.add(new UserConnection(username, isConnected));
       }
       frame.updateOthersProfilePanel(userConnections.toArray(new UserConnection[0]));
+    }
+    else if(tag.equals("GROUPSTATUS")){
+      List<Group> groupList = new ArrayList<>();
+      for (int i = 1; i < info.length; i++) {
+        String[] tmp = info[i].split(" ");
+        groupList.add(new Group(tmp));
+      }
+
+      stub.groupList = groupList;
+
+      // DEBUG log
+      System.out.println("[DEBUG] Group Status in Client");
+      StringBuffer sb = new StringBuffer();
+      for(Group group : groupList){
+        System.out.println(group.toString());
+      }
+
+      frame.chatPanel.setChatRooms(groupList);
     }
   }
 
