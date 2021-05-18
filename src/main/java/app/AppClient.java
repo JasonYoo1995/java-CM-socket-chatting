@@ -6,6 +6,7 @@ import handler.AppClientEventHandler;
 import stub.AppClientStub;
 import views.AppClientFrame;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public class AppClient {
@@ -13,14 +14,14 @@ public class AppClient {
   private final AppClientFrame appFrame;
   private final AppClientStub stub;
 
-  public AppClient() {
+  public AppClient() throws NoSuchAlgorithmException {
     appFrame = new AppClientFrame();
     stub = new AppClientStub();
     AppClientEventHandler clientEventHandler = new AppClientEventHandler(stub, appFrame);
     stub.setAppEventHandler(clientEventHandler);
   }
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws NoSuchAlgorithmException {
     AppClient client = new AppClient();
     client.appFrame.loginCallback = new LoginCallback() {
       @Override
