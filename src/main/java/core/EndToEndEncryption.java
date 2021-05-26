@@ -19,12 +19,12 @@ public final class EndToEndEncryption {
 
     // 보낼 브로드캐스트 메세지를 전달받은 userName과 publickey를 더해 생성합니다.
     public static String getPublicKeyBroadcastMessage(String userName, PublicKey publicKey) {
-        return userName + '/' + publicKey2Base64String(publicKey);
+        return userName + ' ' + publicKey2Base64String(publicKey);
     }
 
     // 브로드캐스트 메세지를 사용자 이름과 publickey 를 포함한 MAP 자료형으로 반환합니다.
     public static Map interpretPublicKeyBroadcastMessage(String message) throws InvalidKeySpecException, NoSuchAlgorithmException {
-        String[] strarr = message.split("/");
+        String[] strarr = message.split(" ");
         Map<String, PublicKey> publicKeyMap = new HashMap<String, PublicKey>();
         publicKeyMap.put(strarr[0], getPublicKeyFromBase64String(strarr[1]));
         return publicKeyMap;

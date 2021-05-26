@@ -28,6 +28,35 @@ public class AppClientStub extends CMClientStub {
     privateKey = keyPair.getPrivate();
   }
 
+  public void setPublicKeyMap(Map<String, PublicKey> paramMap) {
+    this.publicKeyMap = paramMap;
+  }
+
+  public Map<String, PublicKey> getPublicKeyMap() {
+    return this.publicKeyMap;
+  }
+
+  public void appendPublicKeyMap(Map<String, PublicKey> paramMap) {
+    Map tmp = new HashMap(paramMap);
+    tmp.keySet().removeAll(this.publicKeyMap.keySet());
+    this.publicKeyMap.putAll(tmp);
+  }
+
+  public void publicKeyBroadcast(String chatRoomName) {
+
+    CMInteractionInfo interInfo = getCMInfo().getInteractionInfo();
+    String strDefServer = interInfo.getDefaultServerInfo().getServerName();
+
+    String strPublicKey = EndToEndEncryption.getPublicKeyBroadcastMessage(getMyself().getName(), publicKey);
+
+    StringBuffer sb = new StringBuffer("PUBLICKEYBROADCAST\n");
+    sb.append(strPublicKey).append("\n");
+    CMDummyEvent due = new CMDummyEvent();
+    due.setDummyInfo(sb.toString());
+
+    CMEventManager.broadcastEvent(due, getCMInfo());
+  }
+
   public void createAndEnterChatRoom(String chatRoomName) {
     if (groupList.size() == totalGroupCount - 1) { // 모든 채팅방이 사용 중이라면
       System.out.println("더 이상 채팅방을 생성할 수 없습니다.");

@@ -1,7 +1,12 @@
 package handler;
 
+import core.EndToEndEncryption;
 import core.Group;
 import core.UserConnection;
+
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,6 +79,18 @@ public class AppClientEventHandler implements CMAppEventHandler {
       }
 
       frame.chatPanel.setChatRooms(groupList);
+    } else if (tag.equals("PUBLICKEYBROADCAST")) {
+      try {
+        stub.appendPublicKeyMap(EndToEndEncryption.interpretPublicKeyBroadcastMessage(info[1]));
+      } catch (InvalidKeySpecException e) {
+        e.printStackTrace();
+      } catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
+      }
+
+      // DEBUG log
+      System.out.println(stub.getMyself().getName() + "'s publickeymap");
+      stub.getPublicKeyMap().forEach((key, value) -> System.out.println(key + ":" + value));
     }
   }
 
