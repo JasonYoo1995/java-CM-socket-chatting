@@ -91,6 +91,10 @@ public class AppClientStub extends CMClientStub {
     CMEventManager.unicastEvent(due, strDefServer, getCMInfo()); // Dummy Event 전달
   }
 
+  public void sendChat() {
+
+  }
+
   // 1024비트 RSA 키쌍을 생성합니다.
   public static KeyPair genRSAKeyPair() throws NoSuchAlgorithmException {
     SecureRandom secureRandom = new SecureRandom();

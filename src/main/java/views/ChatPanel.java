@@ -1,8 +1,6 @@
 package views;
 
-import callback.EnterCallback;
-import callback.ExitCallback;
-import callback.GroupCallback;
+import callback.*;
 import core.Group;
 
 import java.awt.BorderLayout;
@@ -10,6 +8,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JList;
@@ -25,10 +24,14 @@ public class ChatPanel extends JPanel {
   private JList<String> chatRooms;
   private JPanel configPanel;
   private CircleButton addChatRoomButton;
+  private ChatRoomFrame chatRoomFrame;
+
+  public ArrayList<ChatRoomFrame> chatRoomFrameList = new ArrayList<ChatRoomFrame>();
 
   public GroupCallback groupCallback;
   public ExitCallback exitCallback;
   public EnterCallback enterCallback;
+  public StubCallback stubCallback;
 
   public ChatPanel() {
     setLayout(new BorderLayout());
@@ -52,7 +55,8 @@ public class ChatPanel extends JPanel {
       public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2) {
           String chatRoomTitle = chatRooms.getSelectedValue();
-          new ChatRoomFrame(chatRoomTitle, exitCallback);
+          chatRoomFrame = new ChatRoomFrame(chatRoomTitle, exitCallback);
+          chatRoomFrameList.add(chatRoomFrame);
           enterCallback.enter(chatRoomTitle);
         }
       }
@@ -93,7 +97,23 @@ public class ChatPanel extends JPanel {
   }
 
   public void enterChatRoom(String chatRoomTitle) {
-    new ChatRoomFrame(chatRoomTitle, exitCallback);
+    chatRoomFrame = new ChatRoomFrame(chatRoomTitle, exitCallback);
+    chatRoomFrameList.add(chatRoomFrame);
+    chatRoomFrame.chatCallback = new ChatCallback() {
+      @Override
+      public void onSuccess(String chatStr) {
+        System.out.println("chatCallback: " + chatStr);
+        stubCallback.getStub().chat("/g", chatStr);
+      }
+    };
+
+    /*chatRoomFrame.chatReceiveCallback = new ChatRoomFrameCallback() {
+      @Override
+      public void receive(ChatRoomFrame receiveStr) {
+        System.out.println("ChatRoomFrameCallback: " + receiveStr);
+        chatRoomFrame.addChatMessage(receiveStr);
+      }
+    };*/
   }
 
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 import kr.ac.konkuk.ccslab.cm.event.CMDummyEvent;
 import kr.ac.konkuk.ccslab.cm.event.CMEvent;
+import kr.ac.konkuk.ccslab.cm.event.CMInterestEvent;
 import kr.ac.konkuk.ccslab.cm.event.CMSessionEvent;
 import kr.ac.konkuk.ccslab.cm.event.handler.CMAppEventHandler;
 import kr.ac.konkuk.ccslab.cm.info.CMInfo;
@@ -92,9 +93,19 @@ public class AppClientEventHandler implements CMAppEventHandler {
           System.out.println("This client successfully logs in to the server.");
         }
         break;
+      case CMSessionEvent.SESSION_TALK:
+        getChats(se);
       default:
         break;
     }
+  }
+
+  private void getChats(CMSessionEvent se) {
+    String message = se.getUserName() + ": " + se.getTalk();
+    System.out.println("getChats>> " + message);
+
+
+
   }
 
 }

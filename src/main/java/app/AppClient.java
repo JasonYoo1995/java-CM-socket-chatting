@@ -62,6 +62,13 @@ public class AppClient {
 
     client.appFrame.chatPanel.enterCallback = client.stub::selectAndEnterChatRoom;
 
+    client.appFrame.chatPanel.stubCallback = new StubCallback() {
+      @Override
+      public AppClientStub getStub() {
+        return client.stub;
+      }
+    };
+
     client.appFrame.showLoginModal();
   }
 
