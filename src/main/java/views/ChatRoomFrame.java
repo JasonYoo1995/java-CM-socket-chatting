@@ -21,9 +21,10 @@ public class ChatRoomFrame extends JFrame {
   private ChatRoomFrame() {
   }
 
-  public ChatRoomFrame(String chatRoomTitle, ExitCallback exitCallback) {
+  public ChatRoomFrame(String chatRoomTitle, ExitCallback exitCallback, ChatCallback chatCallback) {
     this.exitCallback = exitCallback;
     this.title = chatRoomTitle;
+    this.chatCallback = chatCallback;
 
     setTitle(title);
     setSize(600, 600);
@@ -73,6 +74,7 @@ public class ChatRoomFrame extends JFrame {
   }
 
   public void addChatMessage(String message) {
+    System.out.println("ChatRoomFrame-addChatMessage: " + message);
     String chat = othersChatTextPane.getText() + "\n" + message;
     othersChatTextPane.setText(chat.trim());
   }

@@ -69,6 +69,8 @@ public class AppClient {
       }
     };
 
+    // client.appFrame.chatPanel.
+
     client.appFrame.showLoginModal();
   }
 

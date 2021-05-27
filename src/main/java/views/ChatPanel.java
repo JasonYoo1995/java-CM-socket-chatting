@@ -25,6 +25,7 @@ public class ChatPanel extends JPanel {
   private JPanel configPanel;
   private CircleButton addChatRoomButton;
   private ChatRoomFrame chatRoomFrame;
+  private ChatCallback chatCallback;
 
   public ArrayList<ChatRoomFrame> chatRoomFrameList = new ArrayList<ChatRoomFrame>();
 
@@ -32,10 +33,15 @@ public class ChatPanel extends JPanel {
   public ExitCallback exitCallback;
   public EnterCallback enterCallback;
   public StubCallback stubCallback;
+  public GroupUserCallback groupUserCallback;
 
   public ChatPanel() {
     setLayout(new BorderLayout());
     setConfigPanel();
+  }
+
+  public ChatRoomFrame getChatRoomFrame() {
+    return this.chatRoomFrame;
   }
 
   public void setChatRooms(List<Group> groupList) {
@@ -55,7 +61,7 @@ public class ChatPanel extends JPanel {
       public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2) {
           String chatRoomTitle = chatRooms.getSelectedValue();
-          chatRoomFrame = new ChatRoomFrame(chatRoomTitle, exitCallback);
+          chatRoomFrame = new ChatRoomFrame(chatRoomTitle, exitCallback, createChatCallback());
           chatRoomFrameList.add(chatRoomFrame);
           enterCallback.enter(chatRoomTitle);
         }
@@ -96,16 +102,21 @@ public class ChatPanel extends JPanel {
     add(configPanel, BorderLayout.NORTH);
   }
 
-  public void enterChatRoom(String chatRoomTitle) {
-    chatRoomFrame = new ChatRoomFrame(chatRoomTitle, exitCallback);
-    chatRoomFrameList.add(chatRoomFrame);
-    chatRoomFrame.chatCallback = new ChatCallback() {
+  private ChatCallback createChatCallback() {
+    return new ChatCallback() {
       @Override
       public void onSuccess(String chatStr) {
         System.out.println("chatCallback: " + chatStr);
-        stubCallback.getStub().chat("/g", chatStr);
+        //
+        stubCallback.getStub().chat("/b", chatStr);
       }
     };
+  }
+
+  public void enterChatRoom(String chatRoomTitle) {
+    chatRoomFrame = new ChatRoomFrame(chatRoomTitle, exitCallback, createChatCallback());
+    chatRoomFrameList.add(chatRoomFrame);
+
 
     /*chatRoomFrame.chatReceiveCallback = new ChatRoomFrameCallback() {
       @Override

@@ -7,7 +7,6 @@ import java.util.List;
 
 import kr.ac.konkuk.ccslab.cm.event.CMDummyEvent;
 import kr.ac.konkuk.ccslab.cm.event.CMEvent;
-import kr.ac.konkuk.ccslab.cm.event.CMInterestEvent;
 import kr.ac.konkuk.ccslab.cm.event.CMSessionEvent;
 import kr.ac.konkuk.ccslab.cm.event.handler.CMAppEventHandler;
 import kr.ac.konkuk.ccslab.cm.info.CMInfo;
@@ -104,8 +103,7 @@ public class AppClientEventHandler implements CMAppEventHandler {
     String message = se.getUserName() + ": " + se.getTalk();
     System.out.println("getChats>> " + message);
 
-
-
+    frame.chatPanel.getChatRoomFrame().addChatMessage(message);
   }
 
 }
