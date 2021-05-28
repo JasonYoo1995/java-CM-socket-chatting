@@ -34,7 +34,6 @@ public class ChatPanel extends JPanel {
   public ExitCallback exitCallback;
   public EnterCallback enterCallback;
   public StubCallback stubCallback;
-  public GroupUserCallback groupUserCallback;
 
   public ChatPanel() {
     setLayout(new BorderLayout());
