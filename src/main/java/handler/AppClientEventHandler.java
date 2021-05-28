@@ -7,6 +7,7 @@ import java.util.List;
 
 import kr.ac.konkuk.ccslab.cm.event.CMDummyEvent;
 import kr.ac.konkuk.ccslab.cm.event.CMEvent;
+import kr.ac.konkuk.ccslab.cm.event.CMInterestEvent;
 import kr.ac.konkuk.ccslab.cm.event.CMSessionEvent;
 import kr.ac.konkuk.ccslab.cm.event.handler.CMAppEventHandler;
 import kr.ac.konkuk.ccslab.cm.info.CMInfo;
@@ -35,6 +36,8 @@ public class AppClientEventHandler implements CMAppEventHandler {
       case CMInfo.CM_DUMMY_EVENT:
         processDummyEvent(cme);
         break;
+      case CMInfo.CM_INTEREST_EVENT:
+        processInterestEvent(cme);
       default:
         break;
     }
@@ -99,9 +102,27 @@ public class AppClientEventHandler implements CMAppEventHandler {
     }
   }
 
+  private void processInterestEvent(CMEvent cme) {
+    CMInterestEvent ie = (CMInterestEvent) cme;
+    switch (ie.getID()) {
+      case CMInterestEvent.USER_TALK:
+        getChats(ie);
+        break;
+      default:
+        break;
+    }
+  }
+
   private void getChats(CMSessionEvent se) {
     String message = se.getUserName() + ": " + se.getTalk();
-    System.out.println("getChats>> " + message);
+    System.out.println("Get Session Chats >> " + message);
+
+    frame.chatPanel.getChatRoomFrame().addChatMessage(message);
+  }
+
+  private void getChats(CMInterestEvent ie) {
+    String message = ie.getUserName() + ": " + ie.getTalk();
+    System.out.println("Get Interest Chats >> " + message);
 
     frame.chatPanel.getChatRoomFrame().addChatMessage(message);
   }

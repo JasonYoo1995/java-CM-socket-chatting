@@ -153,6 +153,4 @@ public class AppClientStub extends CMClientStub {
     X509EncodedKeySpec keySpecX509 = new X509EncodedKeySpec(Base64.getDecoder().decode(publicKeyString));
     return keyFactory.generatePublic(keySpecX509);
   }
-
-
 }

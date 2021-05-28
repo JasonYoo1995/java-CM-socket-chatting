@@ -2,6 +2,7 @@ package views;
 
 import callback.*;
 import core.Group;
+import kr.ac.konkuk.ccslab.cm.entity.CMUser;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -61,7 +62,7 @@ public class ChatPanel extends JPanel {
       public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2) {
           String chatRoomTitle = chatRooms.getSelectedValue();
-          chatRoomFrame = new ChatRoomFrame(chatRoomTitle, exitCallback, createChatCallback());
+          chatRoomFrame = new ChatRoomFrame(chatRoomTitle, exitCallback, createChatCallback(chatRoomTitle));
           chatRoomFrameList.add(chatRoomFrame);
           enterCallback.enter(chatRoomTitle);
         }
@@ -102,19 +103,41 @@ public class ChatPanel extends JPanel {
     add(configPanel, BorderLayout.NORTH);
   }
 
-  private ChatCallback createChatCallback() {
+  private ChatCallback createChatCallback(String chatRoomTitle) {
     return new ChatCallback() {
       @Override
       public void onSuccess(String chatStr) {
         System.out.println("chatCallback: " + chatStr);
-        //
-        stubCallback.getStub().chat("/b", chatStr);
+        List<Group> groupList = stubCallback.getStub().groupList;
+        Group group = null;
+
+        for (Group g : groupList) {
+            if (g.chatRoomName.equals(chatRoomTitle)) {
+                group = g;
+                break;
+            }
+        }
+
+        if (group == null) {
+            System.out.println("Not Found ChatRooms");
+            return;
+        }
+
+        List<CMUser> userList = group.userList;
+
+        for (int i = 0; i < userList.size(); i++) {
+            String userName = userList.get(i).getName();
+            String target = "/" + userName;
+            stubCallback.getStub().chat(target, chatStr);
+        }
+
+        // stubCallback.getStub().chat("/g", chatStr);
       }
     };
   }
 
   public void enterChatRoom(String chatRoomTitle) {
-    chatRoomFrame = new ChatRoomFrame(chatRoomTitle, exitCallback, createChatCallback());
+    chatRoomFrame = new ChatRoomFrame(chatRoomTitle, exitCallback, createChatCallback(chatRoomTitle));
     chatRoomFrameList.add(chatRoomFrame);
 
 
