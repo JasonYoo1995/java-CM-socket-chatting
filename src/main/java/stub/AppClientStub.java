@@ -28,6 +28,14 @@ public class AppClientStub extends CMClientStub {
     privateKey = keyPair.getPrivate();
   }
 
+  public PrivateKey getPrivateKey() {
+    return this.privateKey;
+  }
+
+  public PublicKey findPublicKeyByUserName(String targetName) {
+    return getPublicKeyMap().get(targetName);
+  }
+
   public void setPublicKeyMap(Map<String, PublicKey> paramMap) {
     this.publicKeyMap = paramMap;
   }
