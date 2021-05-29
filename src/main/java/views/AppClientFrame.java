@@ -3,6 +3,7 @@ package views;
 import callback.LoginCallback;
 import com.github.weisj.darklaf.LafManager;
 import com.github.weisj.darklaf.theme.DarculaTheme;
+import core.UserConnection;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import javax.swing.JFrame;
@@ -15,10 +16,11 @@ public class AppClientFrame extends JFrame {
 
   public LoginCallback loginCallback;
   private ProfilePanel profilePanel;
-  private ChatPanel chatPanel;
+  public ChatPanel chatPanel;
 
   public AppClientFrame() {
     setAppTheme();
+    chatPanel = new ChatPanel();
   }
 
   public void init() {
@@ -35,7 +37,6 @@ public class AppClientFrame extends JFrame {
     JTabbedPane tabbedPane = new JTabbedPane();
     tabbedPane.setFont(new Font("Nanum Gothic", Font.BOLD, 16));
     profilePanel = new ProfilePanel();
-    chatPanel = new ChatPanel();
     tabbedPane.add("프로필", profilePanel);
     tabbedPane.add("채팅", chatPanel);
     add(tabbedPane);
@@ -43,12 +44,6 @@ public class AppClientFrame extends JFrame {
 
   private void setAppTheme() {
     LafManager.install(new DarculaTheme());
-//    LafManager.install(new IntelliJTheme());
-//    LafManager.install(new HighContrastLightTheme());
-//    LafManager.install(new HighContrastDarkTheme());
-//    LafManager.install(new OneDarkTheme());
-//    LafManager.install(new SolarizedLightTheme());
-//    LafManager.install(new SolarizedDarkTheme());
   }
 
   public void showLoginModal() {
@@ -73,6 +68,10 @@ public class AppClientFrame extends JFrame {
 
   public void updateUserProfile(String username) {
     profilePanel.updateOwnerProfile(username);
+  }
+
+  public void updateOthersProfilePanel(UserConnection[] userConnections) {
+    profilePanel.updateOthersProfilePanel(userConnections);
   }
 
 }

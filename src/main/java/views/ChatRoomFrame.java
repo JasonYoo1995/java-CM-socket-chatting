@@ -1,22 +1,32 @@
 package views;
 
+import callback.ChatCallback;
+import callback.ExitCallback;
+
 import java.awt.BorderLayout;
 import java.awt.Font;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
+import java.awt.event.*;
+import javax.swing.*;
 
 public class ChatRoomFrame extends JFrame {
 
   private JTextPane othersChatTextPane;
   private JTextField userChatTextField;
+  public ExitCallback exitCallback;
+
+  public String title = "";
+
+  public ChatCallback chatCallback;
 
   private ChatRoomFrame() {
   }
 
-  public ChatRoomFrame(String chatRoomTitle) {
-    setTitle(chatRoomTitle);
+  public ChatRoomFrame(String chatRoomTitle, ExitCallback exitCallback, ChatCallback chatCallback) {
+    this.exitCallback = exitCallback;
+    this.title = chatRoomTitle;
+    this.chatCallback = chatCallback;
+
+    setTitle(title);
     setSize(600, 600);
     setResizable(false);
     setLayout(new BorderLayout());
@@ -24,10 +34,10 @@ public class ChatRoomFrame extends JFrame {
     othersChatTextPane = new JTextPane();
     othersChatTextPane.setFont(new Font("Nanum Gothic", Font.PLAIN, 16));
 
-    /* Test dummy message */
-    for (int i = 0; i < 100; i++) {
-      addChatMessage(i % 2 == 0 ? "신윤섭: 안녕하세요~!\n" : "임민규: 응 반갑다~!\n");
-    }
+//    /* Test dummy message */
+//    for (int i = 0; i < 100; i++) {
+//      addChatMessage(i % 2 == 0 ? "신윤섭: 안녕하세요~!\n" : "임민규: 응 반갑다~!\n");
+//    }
 
     othersChatTextPane.setEditable(false);
     add(othersChatTextPane, BorderLayout.CENTER);
@@ -40,12 +50,32 @@ public class ChatRoomFrame extends JFrame {
     userChatTextField.setFont(new Font("Nanum Gothic", Font.PLAIN, 16));
     add(userChatTextField, BorderLayout.SOUTH);
 
+    Action chatEnter = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String chatStr = userChatTextField.getText();
+            System.out.println("ChatRoomFrame Enter Action: " + chatStr);
+            userChatTextField.setText("");
+            chatCallback.onSuccess(chatStr);
+        }
+    };
+
+    KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false);
+    userChatTextField.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(enter, "ENTER");
+    userChatTextField.getActionMap().put("ENTER", chatEnter);
+
     setVisible(true);
+
+    addWindowListener(new WindowAdapter() {
+      public void windowClosing(WindowEvent e) {
+        exitCallback.exit();
+      }
+    });
   }
 
-  private void addChatMessage(String message) {
+  public void addChatMessage(String message) {
+    System.out.println("ChatRoomFrame-addChatMessage: " + message);
     String chat = othersChatTextPane.getText() + "\n" + message;
     othersChatTextPane.setText(chat.trim());
   }
-
 }

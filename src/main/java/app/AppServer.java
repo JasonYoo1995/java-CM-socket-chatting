@@ -7,14 +7,13 @@ import views.AppServerFrame;
 
 public class AppServer {
 
-  private AppServerFrame appFrame;
-  private AppServerStub stub;
-  private AppServerEventHandler serverEventHandler;
+  private final AppServerFrame appFrame;
+  private final AppServerStub stub;
 
   public AppServer() {
     appFrame = new AppServerFrame();
     stub = new AppServerStub();
-    serverEventHandler = new AppServerEventHandler(stub, appFrame);
+    AppServerEventHandler serverEventHandler = new AppServerEventHandler(stub, appFrame);
     stub.setAppEventHandler(serverEventHandler);
   }
 
@@ -42,5 +41,7 @@ public class AppServer {
     String ip = server.stub.getServerAddress();
     int port = server.stub.getServerPort();
     server.appFrame.showIPAndPortModal(ip, port);
+    server.stub.initiateGroupUserList();
   }
+
 }
