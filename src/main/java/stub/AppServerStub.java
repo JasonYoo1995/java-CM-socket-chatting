@@ -1,5 +1,6 @@
 package stub;
 
+import core.EndToEndEncryption;
 import core.Group;
 import core.UserConnection;
 import java.sql.ResultSet;
@@ -11,7 +12,9 @@ import java.util.stream.Stream;
 import kr.ac.konkuk.ccslab.cm.entity.CMGroup;
 import kr.ac.konkuk.ccslab.cm.entity.CMUser;
 import kr.ac.konkuk.ccslab.cm.event.CMDummyEvent;
+import kr.ac.konkuk.ccslab.cm.info.CMInteractionInfo;
 import kr.ac.konkuk.ccslab.cm.manager.CMDBManager;
+import kr.ac.konkuk.ccslab.cm.manager.CMEventManager;
 import kr.ac.konkuk.ccslab.cm.stub.CMServerStub;
 
 public class AppServerStub extends CMServerStub {
@@ -20,6 +23,17 @@ public class AppServerStub extends CMServerStub {
 
   public AppServerStub() {
     super();
+  }
+
+  public void publicKeyBroadcast(String strMessage) {
+
+    StringBuffer sb = new StringBuffer("PUBLICKEYBROADCAST\n");
+    sb.append(strMessage).append("\n");
+    CMDummyEvent due = new CMDummyEvent();
+    due.setDummyInfo(sb.toString());
+
+    broadcast(due);
+
   }
 
   public void broadcastGroupStatus() {

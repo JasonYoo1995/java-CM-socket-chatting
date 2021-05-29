@@ -36,6 +36,8 @@ public class AppClient {
         client.appFrame.updateUserProfile(username);
 
         // server에게 요청
+        client.stub.sendPublicKeyToServer();
+
       }
 
       @Override

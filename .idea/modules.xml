@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/NKLCBDTalk.iml" filepath="$PROJECT_DIR$/.idea/modules/NKLCBDTalk.iml" group="NKLCBDTalk" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/NKLCBDTalk_main.iml" filepath="$PROJECT_DIR$/.idea/modules/NKLCBDTalk_main.iml" group="NKLCBDTalk" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/NKLCBDTalk_test.iml" filepath="$PROJECT_DIR$/.idea/modules/NKLCBDTalk_test.iml" group="NKLCBDTalk" />
+    </modules>
+  </component>
+</project>

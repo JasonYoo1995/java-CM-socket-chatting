@@ -42,7 +42,7 @@ public class AppClientStub extends CMClientStub {
     this.publicKeyMap.putAll(tmp);
   }
 
-  public void publicKeyBroadcast(String chatRoomName) {
+  public void sendPublicKeyToServer() {
 
     CMInteractionInfo interInfo = getCMInfo().getInteractionInfo();
     String strDefServer = interInfo.getDefaultServerInfo().getServerName();
@@ -54,7 +54,7 @@ public class AppClientStub extends CMClientStub {
     CMDummyEvent due = new CMDummyEvent();
     due.setDummyInfo(sb.toString());
 
-    CMEventManager.broadcastEvent(due, getCMInfo());
+    CMEventManager.unicastEvent(due, strDefServer, getCMInfo()); // Dummy Event 전달
   }
 
   public void createAndEnterChatRoom(String chatRoomName) {
