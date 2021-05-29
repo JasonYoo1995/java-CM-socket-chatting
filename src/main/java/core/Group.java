@@ -17,7 +17,9 @@ public class Group {
   public Group(CMGroup cmGroup) {
     this.groupName = cmGroup.getGroupName();
     this.chatRoomName = "빈_채팅방";
-    this.channelInfo = cmGroup.getGroupAddress();
+    String channelInfo = cmGroup.getMulticastChannelInfo().toString();
+    this.channelInfo = channelInfo
+        .substring(0, channelInfo.length() - 1); // substring은 '\n'를 제거하기 위함
     userList.addAll(cmGroup.getGroupUsers().getAllMembers());
   }
 
