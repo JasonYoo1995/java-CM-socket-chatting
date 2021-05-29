@@ -65,6 +65,9 @@ public class AppServerEventHandler implements CMAppEventHandler {
         frame.addLogMessage(
             "[" + se.getUserName() + "] requests to join session(" + se.getSessionName() + ").");
         break;
+      case CMSessionEvent.SESSION_TALK:
+        frame.addLogMessage("(" + se.getHandlerSession() + ")");
+        frame.addLogMessage("<" + se.getUserName() + ">: " + se.getTalk() );
       default:
         break;
     }

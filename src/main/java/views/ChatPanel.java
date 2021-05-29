@@ -1,15 +1,15 @@
 package views;
 
-import callback.EnterCallback;
-import callback.ExitCallback;
-import callback.GroupCallback;
+import callback.*;
 import core.Group;
+import kr.ac.konkuk.ccslab.cm.entity.CMUser;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JList;
@@ -25,14 +25,23 @@ public class ChatPanel extends JPanel {
   private JList<String> chatRooms;
   private JPanel configPanel;
   private CircleButton addChatRoomButton;
+  private ChatRoomFrame chatRoomFrame;
+  private ChatCallback chatCallback;
+
+  public ArrayList<ChatRoomFrame> chatRoomFrameList = new ArrayList<ChatRoomFrame>();
 
   public GroupCallback groupCallback;
   public ExitCallback exitCallback;
   public EnterCallback enterCallback;
+  public StubCallback stubCallback;
 
   public ChatPanel() {
     setLayout(new BorderLayout());
     setConfigPanel();
+  }
+
+  public ChatRoomFrame getChatRoomFrame() {
+    return this.chatRoomFrame;
   }
 
   public void setChatRooms(List<Group> groupList) {
@@ -52,7 +61,8 @@ public class ChatPanel extends JPanel {
       public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2) {
           String chatRoomTitle = chatRooms.getSelectedValue();
-          new ChatRoomFrame(chatRoomTitle, exitCallback);
+          chatRoomFrame = new ChatRoomFrame(chatRoomTitle, exitCallback, createChatCallback(chatRoomTitle));
+          chatRoomFrameList.add(chatRoomFrame);
           enterCallback.enter(chatRoomTitle);
         }
       }
@@ -92,8 +102,51 @@ public class ChatPanel extends JPanel {
     add(configPanel, BorderLayout.NORTH);
   }
 
+  private ChatCallback createChatCallback(String chatRoomTitle) {
+    return new ChatCallback() {
+      @Override
+      public void onSuccess(String chatStr) {
+        System.out.println("chatCallback: " + chatStr);
+        List<Group> groupList = stubCallback.getStub().groupList;
+        Group group = null;
+
+        for (Group g : groupList) {
+            if (g.chatRoomName.equals(chatRoomTitle)) {
+                group = g;
+                break;
+            }
+        }
+
+        if (group == null) {
+            System.out.println("Not Found ChatRooms");
+            return;
+        }
+
+        List<CMUser> userList = group.userList;
+
+        for (int i = 0; i < userList.size(); i++) {
+            String userName = userList.get(i).getName();
+            String target = "/" + userName;
+            stubCallback.getStub().chat(target, chatStr);
+        }
+
+        // stubCallback.getStub().chat("/g", chatStr);
+      }
+    };
+  }
+
   public void enterChatRoom(String chatRoomTitle) {
-    new ChatRoomFrame(chatRoomTitle, exitCallback);
+    chatRoomFrame = new ChatRoomFrame(chatRoomTitle, exitCallback, createChatCallback(chatRoomTitle));
+    chatRoomFrameList.add(chatRoomFrame);
+
+
+    /*chatRoomFrame.chatReceiveCallback = new ChatRoomFrameCallback() {
+      @Override
+      public void receive(ChatRoomFrame receiveStr) {
+        System.out.println("ChatRoomFrameCallback: " + receiveStr);
+        chatRoomFrame.addChatMessage(receiveStr);
+      }
+    };*/
   }
 
 }
