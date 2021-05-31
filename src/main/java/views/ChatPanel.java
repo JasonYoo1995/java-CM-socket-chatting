@@ -1,6 +1,7 @@
 package views;
 
 import callback.*;
+import core.EndToEndEncryption;
 import core.Group;
 import kr.ac.konkuk.ccslab.cm.entity.CMUser;
 
@@ -9,8 +10,13 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.swing.BorderFactory;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -127,7 +133,19 @@ public class ChatPanel extends JPanel {
         for (int i = 0; i < userList.size(); i++) {
             String userName = userList.get(i).getName();
             String target = "/" + userName;
-            stubCallback.getStub().chat(target, chatStr);
+            try {
+              stubCallback.getStub().chat(target, EndToEndEncryption.encryptRSA(chatStr, stubCallback.getStub().findPublicKeyByUserName(userName)));
+            } catch (NoSuchPaddingException e) {
+              e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+              e.printStackTrace();
+            } catch (InvalidKeyException e) {
+              e.printStackTrace();
+            } catch (BadPaddingException e) {
+              e.printStackTrace();
+            } catch (IllegalBlockSizeException e) {
+              e.printStackTrace();
+            }
         }
 
         // stubCallback.getStub().chat("/g", chatStr);

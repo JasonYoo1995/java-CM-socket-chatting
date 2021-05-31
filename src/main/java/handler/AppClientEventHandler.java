@@ -1,7 +1,14 @@
 package handler;
 
+import core.EndToEndEncryption;
 import core.Group;
 import core.UserConnection;
+
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +20,10 @@ import kr.ac.konkuk.ccslab.cm.event.handler.CMAppEventHandler;
 import kr.ac.konkuk.ccslab.cm.info.CMInfo;
 import stub.AppClientStub;
 import views.AppClientFrame;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 public class AppClientEventHandler implements CMAppEventHandler {
 
@@ -69,6 +80,9 @@ public class AppClientEventHandler implements CMAppEventHandler {
 
       stub.groupList = groupList;
 
+      // Refresh all client's public key map
+      stub.sendPublicKeyToServer();
+
       // DEBUG log
       System.out.println("[DEBUG] Group Status in Client");
       StringBuffer sb = new StringBuffer();
@@ -77,6 +91,18 @@ public class AppClientEventHandler implements CMAppEventHandler {
       }
 
       frame.chatPanel.setChatRooms(groupList);
+    } else if (tag.equals("PUBLICKEYBROADCAST")) {
+      try {
+        stub.appendPublicKeyMap(EndToEndEncryption.interpretPublicKeyBroadcastMessage(info[1]));
+      } catch (InvalidKeySpecException e) {
+        e.printStackTrace();
+      } catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
+      }
+
+      // DEBUG log
+      System.out.println("#####" + stub.getMyself().getName() + "'s publickeymap");
+      stub.getPublicKeyMap().forEach((key, value) -> System.out.println("###" + key + ":" + value));
     }
   }
 
@@ -114,15 +140,57 @@ public class AppClientEventHandler implements CMAppEventHandler {
   }
 
   private void getChats(CMSessionEvent se) {
+    //before decryption
+    System.out.println("!!!!! BEFORE DECRYPTION !!!!!");
     String message = se.getUserName() + ": " + se.getTalk();
+    System.out.println("Get Session Chats >> " + message);
+
+    //after decryption
+    System.out.println("!!!!! AFTER DECRYPTION !!!!!");
+    try {
+      message = se.getUserName() + ": " + EndToEndEncryption.decryptRSA(se.getTalk(), stub.getPrivateKey());
+    } catch (NoSuchPaddingException e) {
+      e.printStackTrace();
+    } catch (NoSuchAlgorithmException e) {
+      e.printStackTrace();
+    } catch (InvalidKeyException e) {
+      e.printStackTrace();
+    } catch (BadPaddingException e) {
+      e.printStackTrace();
+    } catch (IllegalBlockSizeException e) {
+      e.printStackTrace();
+    } catch (UnsupportedEncodingException e) {
+      e.printStackTrace();
+    }
     System.out.println("Get Session Chats >> " + message);
 
     frame.chatPanel.getChatRoomFrame().addChatMessage(message);
   }
 
   private void getChats(CMInterestEvent ie) {
+    //before decryption
+    System.out.println("!!!!! BEFORE DECRYPTION !!!!!");
     String message = ie.getUserName() + ": " + ie.getTalk();
     System.out.println("Get Interest Chats >> " + message);
+
+    //after decryption
+    System.out.println("!!!!! AFTER DECRYPTION !!!!!");
+    try {
+      message = ie.getUserName() + ": " + EndToEndEncryption.decryptRSA(ie.getTalk(), stub.getPrivateKey());
+    } catch (NoSuchPaddingException e) {
+      e.printStackTrace();
+    } catch (NoSuchAlgorithmException e) {
+      e.printStackTrace();
+    } catch (InvalidKeyException e) {
+      e.printStackTrace();
+    } catch (BadPaddingException e) {
+      e.printStackTrace();
+    } catch (IllegalBlockSizeException e) {
+      e.printStackTrace();
+    } catch (UnsupportedEncodingException e) {
+      e.printStackTrace();
+    }
+    System.out.println("Get Session Chats >> " + message);
 
     frame.chatPanel.getChatRoomFrame().addChatMessage(message);
   }

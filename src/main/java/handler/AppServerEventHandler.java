@@ -86,6 +86,9 @@ public class AppServerEventHandler implements CMAppEventHandler {
     } else if (tag.equals("EXITGROUP")) {
       String groupName = info[1];
       stub.emptyGroupChatRoomName(groupName); // userList.size==0이면 chatRoomName을 초기화
+    } else if (tag.equals("PUBLICKEYBROADCAST")) {
+      String strMessage = info[1];
+      stub.publicKeyBroadcast(strMessage);
     }
   }
 
