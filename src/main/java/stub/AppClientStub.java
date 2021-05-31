@@ -1,12 +1,16 @@
 package stub;
 
 import core.Group;
+import kr.ac.konkuk.ccslab.cm.entity.CMUser;
 import kr.ac.konkuk.ccslab.cm.event.CMDummyEvent;
 import kr.ac.konkuk.ccslab.cm.info.CMInteractionInfo;
 import kr.ac.konkuk.ccslab.cm.manager.CMEventManager;
 import kr.ac.konkuk.ccslab.cm.stub.CMClientStub;
 import core.EndToEndEncryption;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.security.*;
 import java.util.*;
 
@@ -99,12 +103,36 @@ public class AppClientStub extends CMClientStub {
 
   public void selectAndEnterChatRoom(String chatRoomName) {
     String groupName = "";
+    List<CMUser> userList = null;
     for (Group group : groupList) {
       if (group.chatRoomName.equals(chatRoomName)) {
         groupName = group.groupName;
+        userList = group.userList;
         break;
       }
     }
+
+    //Send Login Message
+    for (int i = 0; i < userList.size(); i++) {
+      String userName = userList.get(i).getName();
+      String target = "/" + userName;
+      String chatStr = "System:" + this.getMyself().getName() + "님이 접속하셨습니다.";
+      //this.chat(target, chatStr);
+      try {
+        this.chat(target, EndToEndEncryption.encryptRSA(chatStr, this.findPublicKeyByUserName(userName)));
+      } catch (NoSuchPaddingException e) {
+        e.printStackTrace();
+      } catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
+      } catch (InvalidKeyException e) {
+        e.printStackTrace();
+      } catch (BadPaddingException e) {
+        e.printStackTrace();
+      } catch (IllegalBlockSizeException e) {
+        e.printStackTrace();
+      }
+    }
+    
     changeGroup(groupName); // Interest Event 전달
   }
 
