@@ -190,7 +190,7 @@ public class AppClientEventHandler implements CMAppEventHandler {
     } catch (UnsupportedEncodingException e) {
       e.printStackTrace();
     }
-    System.out.println("Get Session Chats >> " + message);
+    System.out.println("Get Interest Chats >> " + message);
 
     frame.chatPanel.getChatRoomFrame().addChatMessage(message);
   }
