@@ -1,6 +1,7 @@
 package views;
 
 import core.UserConnection;
+import javax.swing.JButton;
 import utils.UserConnectionRenderer;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -29,9 +30,10 @@ public class ProfilePanel extends JPanel {
     ownerPanel = new JPanel();
     ownerPanel.setLayout(new BorderLayout());
     ownerLabel = new JLabel();
-    ownerLabel.setFont(new Font("Nanum Gothic", Font.BOLD, 32));
+    ownerLabel.setFont(new Font("Nanum Gothic", Font.BOLD, 20));
     ownerPanel.add(ownerLabel, BorderLayout.WEST);
-    CircleButton logoutButton = new CircleButton("로그아웃");
+    JButton logoutButton = new JButton("로그아웃");
+    logoutButton.setSize(200, 100);
     ownerPanel.add(logoutButton, BorderLayout.EAST);
     add(ownerPanel, BorderLayout.NORTH);
     ownerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
