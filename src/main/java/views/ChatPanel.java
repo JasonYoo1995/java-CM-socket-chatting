@@ -3,6 +3,7 @@ package views;
 import callback.*;
 import core.EndToEndEncryption;
 import core.Group;
+import javax.swing.JButton;
 import kr.ac.konkuk.ccslab.cm.entity.CMUser;
 
 import java.awt.BorderLayout;
@@ -30,7 +31,7 @@ public class ChatPanel extends JPanel {
   private JPanel chatRoomsPanel;
   private JList<String> chatRooms;
   private JPanel configPanel;
-  private CircleButton addChatRoomButton;
+  private JButton addChatRoomButton;
   private ChatRoomFrame chatRoomFrame;
   private ChatCallback chatCallback;
 
@@ -67,7 +68,8 @@ public class ChatPanel extends JPanel {
       public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2) {
           String chatRoomTitle = chatRooms.getSelectedValue();
-          chatRoomFrame = new ChatRoomFrame(chatRoomTitle, exitCallback, createChatCallback(chatRoomTitle));
+          chatRoomFrame = new ChatRoomFrame(chatRoomTitle, exitCallback,
+              createChatCallback(chatRoomTitle));
           chatRoomFrameList.add(chatRoomFrame);
           enterCallback.enter(chatRoomTitle);
         }
@@ -91,7 +93,7 @@ public class ChatPanel extends JPanel {
   private void setConfigPanel() {
     configPanel = new JPanel();
     configPanel.setLayout(new BorderLayout());
-    addChatRoomButton = new CircleButton("채팅추가");
+    addChatRoomButton = new JButton("채팅추가");
     addChatRoomButton.addActionListener(e -> {
       JTextField chatRoomTextField = new JTextField();
       Object[] chatRoomObject = {"채팅방 이름", chatRoomTextField};
@@ -117,35 +119,36 @@ public class ChatPanel extends JPanel {
         Group group = null;
 
         for (Group g : groupList) {
-            if (g.chatRoomName.equals(chatRoomTitle)) {
-                group = g;
-                break;
-            }
+          if (g.chatRoomName.equals(chatRoomTitle)) {
+            group = g;
+            break;
+          }
         }
 
         if (group == null) {
-            System.out.println("Not Found ChatRooms");
-            return;
+          System.out.println("Not Found ChatRooms");
+          return;
         }
 
         List<CMUser> userList = group.userList;
 
         for (int i = 0; i < userList.size(); i++) {
-            String userName = userList.get(i).getName();
-            String target = "/" + userName;
-            try {
-              stubCallback.getStub().chat(target, EndToEndEncryption.encryptRSA(chatStr, stubCallback.getStub().findPublicKeyByUserName(userName)));
-            } catch (NoSuchPaddingException e) {
-              e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-              e.printStackTrace();
-            } catch (InvalidKeyException e) {
-              e.printStackTrace();
-            } catch (BadPaddingException e) {
-              e.printStackTrace();
-            } catch (IllegalBlockSizeException e) {
-              e.printStackTrace();
-            }
+          String userName = userList.get(i).getName();
+          String target = "/" + userName;
+          try {
+            stubCallback.getStub().chat(target, EndToEndEncryption
+                .encryptRSA(chatStr, stubCallback.getStub().findPublicKeyByUserName(userName)));
+          } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+          } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+          } catch (InvalidKeyException e) {
+            e.printStackTrace();
+          } catch (BadPaddingException e) {
+            e.printStackTrace();
+          } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+          }
         }
 
         // stubCallback.getStub().chat("/g", chatStr);
@@ -154,7 +157,8 @@ public class ChatPanel extends JPanel {
   }
 
   public void enterChatRoom(String chatRoomTitle) {
-    chatRoomFrame = new ChatRoomFrame(chatRoomTitle, exitCallback, createChatCallback(chatRoomTitle));
+    chatRoomFrame = new ChatRoomFrame(chatRoomTitle, exitCallback,
+        createChatCallback(chatRoomTitle));
     chatRoomFrameList.add(chatRoomFrame);
 
 
