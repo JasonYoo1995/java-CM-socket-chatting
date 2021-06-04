@@ -116,7 +116,7 @@ public class AppClientStub extends CMClientStub {
     for (int i = 0; i < userList.size(); i++) {
       String userName = userList.get(i).getName();
       String target = "/" + userName;
-      String chatStr = "System:" + this.getMyself().getName() + "님이 접속하셨습니다.";
+      String chatStr = "님이 접속하셨습니다.";
       //this.chat(target, chatStr);
       try {
         this.chat(target, EndToEndEncryption.encryptRSA(chatStr, this.findPublicKeyByUserName(userName)));

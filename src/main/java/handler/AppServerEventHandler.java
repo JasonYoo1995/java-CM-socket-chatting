@@ -101,7 +101,7 @@ public class AppServerEventHandler implements CMAppEventHandler {
                 + ie.getHandlerSession() + ").");
         stub.updateGroupUserList();
         stub.broadcastGroupStatus();
-        frame.addLogMessage(stub.getGroupListString());
+        //frame.addLogMessage(stub.getGroupListString());
         break;
       case CMInterestEvent.USER_LEAVE:
         frame.addLogMessage(

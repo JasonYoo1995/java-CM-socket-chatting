@@ -142,13 +142,13 @@ public class AppClientEventHandler implements CMAppEventHandler {
   private void getChats(CMSessionEvent se) {
     //before decryption
     System.out.println("!!!!! BEFORE DECRYPTION !!!!!");
-    String message = se.getUserName() + ": " + se.getTalk();
+    String message = se.getUserName() + ":\n" + se.getTalk() + "\n";
     System.out.println("Get Session Chats >> " + message);
 
     //after decryption
     System.out.println("!!!!! AFTER DECRYPTION !!!!!");
     try {
-      message = se.getUserName() + ": " + EndToEndEncryption.decryptRSA(se.getTalk(), stub.getPrivateKey());
+      message = se.getUserName() + ":\n" + EndToEndEncryption.decryptRSA(se.getTalk(), stub.getPrivateKey()) + "\n";
     } catch (NoSuchPaddingException e) {
       e.printStackTrace();
     } catch (NoSuchAlgorithmException e) {
@@ -165,18 +165,19 @@ public class AppClientEventHandler implements CMAppEventHandler {
     System.out.println("Get Session Chats >> " + message);
 
     frame.chatPanel.getChatRoomFrame().addChatMessage(message);
+    frame.chatPanel.getChatRoomFrame().addChatMessage(".");
   }
 
   private void getChats(CMInterestEvent ie) {
     //before decryption
     System.out.println("!!!!! BEFORE DECRYPTION !!!!!");
-    String message = ie.getUserName() + ": " + ie.getTalk();
+    String message = ie.getUserName() + ":\n" + ie.getTalk() + "\n";
     System.out.println("Get Interest Chats >> " + message);
 
     //after decryption
     System.out.println("!!!!! AFTER DECRYPTION !!!!!");
     try {
-      message = ie.getUserName() + ": " + EndToEndEncryption.decryptRSA(ie.getTalk(), stub.getPrivateKey());
+      message = ie.getUserName() + ":\n" + EndToEndEncryption.decryptRSA(ie.getTalk(), stub.getPrivateKey()) + "\n";
     } catch (NoSuchPaddingException e) {
       e.printStackTrace();
     } catch (NoSuchAlgorithmException e) {
@@ -193,6 +194,7 @@ public class AppClientEventHandler implements CMAppEventHandler {
     System.out.println("Get Interest Chats >> " + message);
 
     frame.chatPanel.getChatRoomFrame().addChatMessage(message);
+    frame.chatPanel.getChatRoomFrame().addChatMessage(".");
   }
 
 }

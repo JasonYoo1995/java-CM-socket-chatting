@@ -60,9 +60,8 @@ public class AppServerStub extends CMServerStub {
 
     CMDummyEvent due = new CMDummyEvent();
     due.setDummyInfo(sb.toString());
-    System.out
-        .println("[DEBUG] AppServerStub.java - broadcastGroupStatus() - dummy event - GROUPSTATUS");
-    System.out.println(sb);
+    //System.out.println("[DEBUG] AppServerStub.java - broadcastGroupStatus() - dummy event - GROUPSTATUS");
+    //System.out.println(sb);
     broadcast(due);
   }
 
@@ -128,7 +127,7 @@ public class AppServerStub extends CMServerStub {
         groupList.get(i).chatRoomName = "빈_채팅방";
       }
       i++;
-      System.out.println("[DEBUG] userList " + userList);
+      //System.out.println("[DEBUG] userList " + userList);
     }
   }
 
